@@ -12,6 +12,9 @@ import { convertToISO8601 } from "@/lib/utils";
 // or exceed any SQLite limitations of inserts at a time.
 const BATCH_SIZE = 100;
 
+// Make the timeout on Vercel 5 minutes, requires Pro Plan.
+export const maxDuration = 300;
+
 async function handler(_req: NextRequest) {
     console.log("Retrieving OAuth tokens from the Fuel API");
     const oAuth = await fuelApiClient.getOAuth();

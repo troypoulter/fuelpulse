@@ -30,7 +30,7 @@ export default function Home() {
   return (
     <main className="w-full py-12">
       <div className="container mx-auto px-4">
-        <h1 className="text-2xl font-bold tracking-tight mb-6">Fuel Stations for Deborah ❤</h1>
+        <h1 className="text-2xl font-bold tracking-tight mb-6">Fuel Stations Coming Soon</h1>
         {/* {locationError ? (
           <p>Error: {locationError}</p>
         ) : (

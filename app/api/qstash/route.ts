@@ -10,7 +10,7 @@ import { convertToISO8601 } from "@/lib/utils";
 // As we can deal with a large amount of data, breaking it down
 // into small batches ensures we don't performance hit the API
 // or exceed any SQLite limitations of inserts at a time.
-const BATCH_SIZE = 100;
+const BATCH_SIZE = 1000;
 
 // Make the timeout on Vercel 5 minutes, requires Pro Plan.
 export const maxDuration = 300;
@@ -63,15 +63,25 @@ async function handler(_req: NextRequest) {
     }
     console.log(`Finished inserting ${newPricesInserted} new prices into the DB!`)
 
-    const combinedResult = await db.query.stations.findMany({
-        with: {
-            prices: {
-                orderBy: (prices, { desc }) => [desc(prices.id)]
+    // Only return the data if we're in development mode.
+    // Otherwise, return a simple success message.
+    // As this call is very expensive/unoptimised and uses up too much of the monthly allowance
+    // of the read/write allowance.
+    if (env.NODE_ENV === "development") {
+        const combinedResult = await db.query.stations.findMany({
+            with: {
+                prices: {
+                    orderBy: (prices, { desc }) => [desc(prices.id)]
+                }
             }
-        }
-    });
+        });
 
-    return NextResponse.json(combinedResult);
+        return NextResponse.json(combinedResult);
+    }
+
+    return NextResponse.json({
+        success: true,
+    })
 }
 
 // When deployed in production mode, verify the signature from QStash.

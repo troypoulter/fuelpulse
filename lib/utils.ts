@@ -1,6 +1,7 @@
 import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
-import { env } from "./env.mjs";
+import { format, zonedTimeToUtc } from 'date-fns-tz';
+import { parse } from 'date-fns';
 import { ZodError, ZodSchema } from "zod";
 import { CurrentPrices, Station } from "./fuelApi/schemas";
 
@@ -57,8 +58,8 @@ export function calculateDistance(lat1: number, lon1: number, lat2: number, lon2
   lat2 = degreesToRadians(lat2);
 
   const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-            Math.sin(dLon / 2) * Math.sin(dLon / 2) * Math.cos(lat1) * Math.cos(lat2); 
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)); 
+    Math.sin(dLon / 2) * Math.sin(dLon / 2) * Math.cos(lat1) * Math.cos(lat2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   return earthRadiusKm * c;
 }
 
@@ -70,4 +71,16 @@ export function getClosestStations(currentPrices: CurrentPrices, currentLat: num
     }))
     .sort((a, b) => a.distance - b.distance)
     .slice(0, 20);
+}
+
+export function convertToISO8601(dateString: string, timezone: string): string {
+  // Parse the date string as being in the specified timezone
+  const formatString = 'dd/MM/yyyy HH:mm:ss';
+  const parsedDate = parse(dateString, formatString, new Date());
+
+  // Convert the date to UTC
+  const dateInUTC = zonedTimeToUtc(parsedDate, timezone);
+
+  // Format the UTC date in ISO 8601 format
+  return format(dateInUTC, "yyyy-MM-dd'T'HH:mm:ss'Z'");
 }

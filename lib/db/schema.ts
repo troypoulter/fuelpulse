@@ -1,4 +1,4 @@
-import { relations } from "drizzle-orm";
+import { relations, sql } from "drizzle-orm";
 import { text, integer, sqliteTable, real, unique } from "drizzle-orm/sqlite-core";
 import { createInsertSchema } from 'drizzle-zod';
 
@@ -10,6 +10,7 @@ export const stations = sqliteTable('stations', {
     brand: text('brand').notNull(),
     latitude: real('latitude').notNull(),
     longitude: real('longitude').notNull(),
+    createdAt: text("createdAt").default(sql`CURRENT_TIMESTAMP`)
 });
 
 export const stationsRelations = relations(stations, ({ many }) => ({
@@ -23,9 +24,11 @@ export const prices = sqliteTable('prices', {
     stationCode: text('stationCode').notNull().references(() => stations.code),
     fuelType: text('fuelType').notNull(),
     price: real('price').notNull(),
-    lastUpdated: text('lastUpdated').notNull(),
+    lastUpdatedRaw: text('lastUpdatedRaw').notNull(),
+    lastUpdatedUTC: text('lastUpdatedUTC').notNull(),
+    createdAt: text("createdAt").default(sql`CURRENT_TIMESTAMP`)
 }, (t) => ({
-    unq: unique().on(t.stationCode, t.fuelType, t.lastUpdated)
+    unq: unique().on(t.stationCode, t.fuelType, t.lastUpdatedUTC)
 }));
 
 export const pricesRelations = relations(prices, ({ one }) => ({

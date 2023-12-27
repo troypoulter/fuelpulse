@@ -5,6 +5,7 @@ import { env } from "@/lib/env.mjs";
 import { fuelApiClient } from "@/lib/fuelApi/fuelApiClient";
 import { insertPriceSchema, insertStationSchema, prices, stations } from "@/lib/db/schema";
 import { db } from "@/lib/db";
+import { convertToISO8601 } from "@/lib/utils";
 
 // As we can deal with a large amount of data, breaking it down
 // into small batches ensures we don't performance hit the API
@@ -45,7 +46,8 @@ async function handler(_req: NextRequest) {
             stationCode: price.stationcode,
             fuelType: price.fueltype,
             price: price.price,
-            lastUpdated: price.lastupdated
+            lastUpdatedRaw: price.lastupdated,
+            lastUpdatedUTC: convertToISO8601(price.lastupdated, 'Australia/Sydney')
         })
     });
 

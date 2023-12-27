@@ -1,6 +1,5 @@
 // import { fuelApiClient } from '@/lib/fuelApi/fuelApiClient'
 // import { useEffect, useState } from 'react';
-import FuelStations from './_components/FuelStations';
 
 export default function Home() {
   // const stations = await fuelApiClient.getAllCurrentPrices();

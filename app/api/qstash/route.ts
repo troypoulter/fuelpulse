@@ -13,6 +13,8 @@ async function handler(_req: NextRequest) {
     const currentPrices = await fuelApiClient.getAllCurrentPrices(oAuth.access_token);
     console.log(`Retrieved current fuel price data for ${currentPrices.stations.length} stations with a ${currentPrices.prices.length} total price data points`)
 
+
+
     // TODO: Store data in database.
     return NextResponse.json(currentPrices);
 }

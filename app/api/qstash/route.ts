@@ -58,9 +58,15 @@ async function handler(_req: NextRequest) {
     }
     console.log(`Finished inserting ${newPricesInserted} new prices into the DB!`)
 
-    const stationsResult = await db.select().from(stations);
+    const combinedResult = await db.query.stations.findMany({
+        with: {
+            prices: {
+                orderBy: (prices, { desc }) => [desc(prices.id)]
+            }
+        }
+    });
 
-    return NextResponse.json(stationsResult);
+    return NextResponse.json(combinedResult);
 }
 
 // When deployed in production mode, verify the signature from QStash.

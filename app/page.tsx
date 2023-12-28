@@ -12,23 +12,21 @@ import Link from "next/link"
 
 export default function Home() {
     return (
-        <div className="container relative">
-            <PageHeader>
-                <Announcement />
-                <PageHeaderHeading>Find the best fuel price in Australia</PageHeaderHeading>
-                <PageHeaderDescription>
-                    Effortlessly locate the most economical fuel options near you.
-                    Streamlined. User-Friendly. Constantly Updated.
-                </PageHeaderDescription>
-                <PageActions>
-                    <Link href="/search" className={cn(buttonVariants())}>
-                        <Fuel className="mr-2 h-4 w-4" /> Find Fuel
-                    </Link>
-                    <Link href="/" className={cn(buttonVariants({ variant: "outline" }))}>
-                        Learn more
-                    </Link>
-                </PageActions>
-            </PageHeader>
-        </div>
+        <PageHeader>
+            <Announcement />
+            <PageHeaderHeading>Find the best fuel price in Australia</PageHeaderHeading>
+            <PageHeaderDescription>
+                Effortlessly locate the most economical fuel options near you.
+                Streamlined. User-Friendly. Constantly Updated.
+            </PageHeaderDescription>
+            <PageActions>
+                <Link href="/find-fuel" className={cn(buttonVariants())}>
+                    <Fuel className="mr-2 h-4 w-4" /> Find Fuel Near Me
+                </Link>
+                <Link href="/" className={cn(buttonVariants({ variant: "outline" }))}>
+                    Learn more
+                </Link>
+            </PageActions>
+        </PageHeader>
     )
 }

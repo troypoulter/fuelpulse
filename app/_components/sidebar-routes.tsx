@@ -12,7 +12,7 @@ const routes = [
     {
         icon: Fuel,
         label: "Find Fuel",
-        href: "/find-fuel"
+        href: "/search"
     }
 ]
 

@@ -20,7 +20,7 @@ export default function Home() {
                 Streamlined. User-Friendly. Constantly Updated.
             </PageHeaderDescription>
             <PageActions>
-                <Link href="/find-fuel" className={cn(buttonVariants())}>
+                <Link href="/search" className={cn(buttonVariants())}>
                     <Fuel className="mr-2 h-4 w-4" /> Find Fuel Near Me
                 </Link>
                 <Link href="/" className={cn(buttonVariants({ variant: "outline" }))}>

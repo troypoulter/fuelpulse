@@ -23,7 +23,7 @@ export default function RootLayout({
           <div className="h-[80px] fixed inset-y-0 w-full z-[49]">
             <Navbar />
           </div>
-          <main className="flex-1 pt-[80px] h-full container relative">
+          <main className="flex-1 pt-[80px] h-full container relative my-4">
             {children}
           </main>
           <Footer />

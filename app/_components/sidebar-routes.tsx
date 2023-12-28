@@ -1,6 +1,6 @@
 "use client";
 
-import { Layout, Search } from "lucide-react";
+import { Layout, Fuel } from "lucide-react";
 import { SidebarItem } from "./sidebar-item";
 
 const routes = [
@@ -10,8 +10,8 @@ const routes = [
         href: "/"
     },
     {
-        icon: Search,
-        label: "Search",
+        icon: Fuel,
+        label: "Find Fuel",
         href: "/search"
     }
 ]

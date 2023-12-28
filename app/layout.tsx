@@ -26,7 +26,7 @@ export default function RootLayout({
           <div className='hidden md:flex pt-[80px] h-full w-56 flex-col fixed inset-y-0 z-[48]'>
             <Sidebar />
           </div>
-          <main className="md:pl-56 pt-[80px] h-full">
+          <main className="flex-1 md:pl-56 pt-[80px] h-full">
             {children}
           </main>
         </div>

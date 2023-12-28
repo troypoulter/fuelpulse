@@ -1,8 +1,10 @@
 import { db } from "@/lib/db";
-import { Card, CardHeader, CardContent } from '@/components/ui/card';
+import { Card, CardHeader, CardContent, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import { Fuel } from "lucide-react";
+import { Separator } from "@/components/ui/separator";
 
 export default async function SearchPage() {
     const stations = await db.query.stations.findMany({
@@ -18,29 +20,17 @@ export default async function SearchPage() {
                 stations?.map(station => (
                     <Card key={station.id}>
                         <CardHeader>
-                            <div className="flex justify-between items-center">
-                                <div>
-                                    <h2 className="text-lg font-bold tracking-tight">{station.name}</h2>
-                                    <p className="text-sm text-gray-500">{station.address}</p>
-                                    <p className="text-sm text-gray-500">Lat: {station.latitude} Long: {station.longitude}</p>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                    <p className="text-sm text-gray-500">4.6km</p>
-                                </div>
-                            </div>
+                            <CardTitle className="flex flex-row"><Fuel className="mr-2 text-blue-500 font-bold" /> {station.name}</CardTitle>
+                            <CardDescription>{station.address}</CardDescription>
                         </CardHeader>
                         <CardContent>
-                            <div className="flex flex-col gap-2">
+                            <Separator className="mb-2" />
+                            <div className="grid gap-2 grid-cols-3">
                                 {station.prices.map(price => (
-                                    <Badge key={price.fuelType}>{`${price.fuelType}: ${price.price}`}</Badge>
+                                    <div key={price.fuelType} className="text-sm text-muted-foreground">{`${price.fuelType}: ${price.price}`}</div>
                                 ))}
                             </div>
                         </CardContent>
-                        <div className="m-4">
-                            <Button asChild>
-                                <Link href="#">View Details</Link>
-                            </Button>
-                        </div>
                     </Card>))
             }</div>
     )

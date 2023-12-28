@@ -5,7 +5,6 @@ import {
     SheetTrigger
 } from "@/components/ui/sheet"
 import { Sidebar } from "./sidebar"
-import { Logo } from "./logo"
 
 export const MobileSidebar = () => {
     return (

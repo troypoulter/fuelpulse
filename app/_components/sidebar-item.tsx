@@ -1,17 +1,20 @@
 "use client";
 
 import { cn } from "@/lib/utils";
+import { set } from "date-fns";
 import { LucideIcon } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
+import { Dispatch, SetStateAction } from "react";
 
 interface SidebarItemProps {
     icon: LucideIcon;
     label: string;
     href: string;
+    setOpen?: Dispatch<SetStateAction<boolean>>;
 }
 
 export const SidebarItem = (
-    { icon: Icon, label, href }: SidebarItemProps
+    { icon: Icon, label, href, setOpen }: SidebarItemProps
 ) => {
     const pathname = usePathname();
     const router = useRouter();
@@ -23,6 +26,9 @@ export const SidebarItem = (
 
     const onClick = () => {
         router.push(href);
+        if (setOpen) {
+            setOpen(false);
+        }
     }
 
     return (

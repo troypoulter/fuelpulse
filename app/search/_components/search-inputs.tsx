@@ -38,7 +38,7 @@ export const SearchInputs = () => {
     }
 
     useEffect(() => {
-        if (searchParams.get('useLocation') === 'true' && !searchParams.has('lat') && !searchParams.has('long')) {
+        if (!searchParams.has('lat') && !searchParams.has('long')) {
             setGeolocationInURL();
         }
     }, []);

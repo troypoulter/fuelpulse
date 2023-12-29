@@ -17,7 +17,7 @@ import { Separator } from "@/components/ui/separator";
 import { formatDistanceToNow } from 'date-fns';
 import { StationWithPricesAndDistance } from "@/lib/db/schema";
 
-export const StationCard = ({ station }: { station: StationWithPricesAndDistance }) => {
+export const StationCard = ({ station, primaryFuelType }: { station: StationWithPricesAndDistance, primaryFuelType: string }) => {
     return (
         <Card key={station.id}>
             <CardHeader>
@@ -26,19 +26,19 @@ export const StationCard = ({ station }: { station: StationWithPricesAndDistance
             </CardHeader>
             <CardContent>
                 <Separator className="mb-2" />
-                <div className="scroll-m-20 text-base tracking-tight flex items-center gap-x-2"><span className="font-semibold">E10</span> <div className="text-xs inline-block">
+                <div className="scroll-m-20 text-base tracking-tight flex items-center gap-x-2"><span className="font-semibold">{primaryFuelType}</span> <div className="text-xs inline-block">
                     <span className="bg-muted text-muted-foreground rounded-lg px-2.5 py-0.5 ">
-                        Reported by station {station.prices.find(price => price.fuelType === 'E10')?.lastUpdatedUTC
-                            ? <span className="font-semibold">{`${formatDistanceToNow(new Date(station.prices.find(s => s.fuelType === 'E10')?.lastUpdatedUTC || Date.now()))} ago`}</span>
+                        Reported by station {station.prices.find(price => price.fuelType === primaryFuelType)?.lastUpdatedUTC
+                            ? <span className="font-semibold">{`${formatDistanceToNow(new Date(station.prices.find(s => s.fuelType === primaryFuelType)?.lastUpdatedUTC || Date.now()))} ago`}</span>
                             : "N/A"
                         }
                     </span>
                 </div>
                 </div>
                 <div className="flex items-baseline gap-x-2">
-                    <div className="text-xl font-bold">{((station.prices.find(price => price.fuelType === 'E10')?.price ?? 0) / 100 * 30).toLocaleString("en-AU", { style: "currency", currency: "AUD" })}</div>
+                    <div className="text-xl font-bold">{((station.prices.find(price => price.fuelType === primaryFuelType)?.price ?? 0) / 100 * 30).toLocaleString("en-AU", { style: "currency", currency: "AUD" })}</div>
                     <p className="text-xs text-muted-foreground">
-                        ({station.prices.find(s => s.fuelType === 'E10')?.price}c/L for 30L)
+                        ({station.prices.find(s => s.fuelType === primaryFuelType)?.price}c/L for 30L)
                     </p>
                 </div>
                 <Separator className="mt-2" />
@@ -52,7 +52,6 @@ export const StationCard = ({ station }: { station: StationWithPricesAndDistance
                                         <TableHead>Fuel Type</TableHead>
                                         <TableHead>Cost</TableHead>
                                         <TableHead>Per Litre</TableHead>
-                                        <TableHead>Date</TableHead>
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
@@ -61,7 +60,6 @@ export const StationCard = ({ station }: { station: StationWithPricesAndDistance
                                             <TableCell className="font-semibold">{price.fuelType}</TableCell>
                                             <TableCell>{(price.price / 100 * 30).toLocaleString("en-AU", { style: "currency", currency: "AUD" })}</TableCell>
                                             <TableCell>{price.price}c/L</TableCell>
-                                            <TableCell>{price.lastUpdatedRaw}</TableCell>
                                         </TableRow>
                                     ))}
                                 </TableBody>

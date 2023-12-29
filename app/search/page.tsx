@@ -71,7 +71,7 @@ export default async function SearchPage({
 
         return (
             <div className="grid gap-6 md:gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-                {stationsWithDistance?.map(station => (<StationCard key={station.id} station={station} />))}
+                {stationsWithDistance?.map(station => (<StationCard key={station.id} station={station} primaryFuelType={fuelType} />))}
             </div>
         )
     }

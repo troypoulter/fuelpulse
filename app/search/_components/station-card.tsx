@@ -15,13 +15,13 @@ import {
 } from "@/components/ui/accordion"
 import { Separator } from "@/components/ui/separator";
 import { formatDistanceToNow } from 'date-fns';
-import { StationWithPrices } from "@/lib/db/schema";
+import { StationWithPricesAndDistance } from "@/lib/db/schema";
 
-export const StationCard = ({ station }: { station: StationWithPrices }) => {
+export const StationCard = ({ station }: { station: StationWithPricesAndDistance }) => {
     return (
         <Card key={station.id}>
             <CardHeader>
-                <CardTitle className="flex flex-row">{station.name}</CardTitle>
+                <CardTitle className="flex flex-row">{station.name} ({station.distance}km)</CardTitle>
                 <CardDescription>{station.address}</CardDescription>
             </CardHeader>
             <CardContent>

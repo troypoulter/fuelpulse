@@ -21,7 +21,7 @@ export const stationsRelations = relations(stations, ({ many }) => ({
 export const insertStationSchema = createInsertSchema(stations);
 export const selectStationSchema = createSelectSchema(stations);
 export type Station = z.infer<typeof selectStationSchema>;
-export type StationWithPrices = Station & { prices: Price[] };
+export type StationWithPricesAndDistance = Station & { prices: Price[], distance: number };
 
 export const prices = sqliteTable('prices', {
     id: integer('id').primaryKey(),

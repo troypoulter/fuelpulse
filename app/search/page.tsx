@@ -16,6 +16,7 @@ import {
     AccordionTrigger,
 } from "@/components/ui/accordion"
 import { Separator } from "@/components/ui/separator";
+import { formatDistanceToNow } from 'date-fns';
 
 export default async function SearchPage() {
     const stations = await db.query.stations.findMany({
@@ -36,7 +37,12 @@ export default async function SearchPage() {
                         </CardHeader>
                         <CardContent>
                             <Separator className="mb-2" />
-                            <div className="scroll-m-20 text-base tracking-tight">E10</div>
+                            <div className="scroll-m-20 text-base tracking-tight flex items-center gap-x-2"><span className="font-semibold">E10</span> <div className="text-xs bg-muted text-muted-foreground px-2.5 py-0.5 rounded-lg inline-block">
+                                Last updated {station.prices.find(s => s.fuelType === 'E10')?.lastUpdatedUTC
+                                    ? <span className="font-semibold">{`${formatDistanceToNow(new Date(station.prices.find(s => s.fuelType === 'E10')?.lastUpdatedUTC || Date.now()))} ago`}</span>
+                                    : "N/A"
+                                }
+                            </div></div>
                             <div className="flex items-baseline gap-x-2">
                                 <div className="text-xl font-bold">{((station.prices.find(s => s.fuelType === 'E10')?.price ?? 0) / 100 * 30).toLocaleString("en-AU", { style: "currency", currency: "AUD" })}</div>
                                 <p className="text-xs text-muted-foreground">
@@ -59,7 +65,7 @@ export default async function SearchPage() {
                                             <TableBody>
                                                 {station.prices.map(price => (
                                                     <TableRow key={price.fuelType}>
-                                                        <TableCell>{price.fuelType}</TableCell>
+                                                        <TableCell className="font-semibold">{price.fuelType}</TableCell>
                                                         <TableCell>{(price.price / 100 * 30).toLocaleString("en-AU", { style: "currency", currency: "AUD" })}</TableCell>
                                                         <TableCell>{price.price}c/L</TableCell>
                                                     </TableRow>

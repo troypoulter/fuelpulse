@@ -20,10 +20,10 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <div className='h-full relative flex flex-col min-h-screen bg-gradient-to-b from-white to-blue-100'>
-          <div className="h-[80px] fixed inset-y-0 w-full z-[49]">
+          <div className="h-[64px] fixed inset-y-0 w-full z-[49]">
             <Navbar />
           </div>
-          <main className="flex-1 pt-[80px] h-full container relative my-4">
+          <main className="flex-1 pt-[64px] h-full container relative my-4">
             {children}
           </main>
           <Footer />

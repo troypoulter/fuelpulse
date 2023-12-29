@@ -1,6 +1,7 @@
 import { db } from "@/lib/db";
 import { StationCard } from "./_components/station-card";
 import { haversineDistance } from "@/lib/utils";
+import Loading from "./loading";
 
 
 export default async function SearchPage({
@@ -50,11 +51,5 @@ export default async function SearchPage({
         )
     }
 
-    return (
-        <div className="grid gap-6 md:gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-            <div className="col-span-3">
-                <p className="text-center text-2xl font-semibold">No results found</p>
-            </div>
-        </div>
-    )
+    return <Loading />
 }

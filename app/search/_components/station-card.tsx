@@ -26,12 +26,15 @@ export const StationCard = ({ station }: { station: StationWithPricesAndDistance
             </CardHeader>
             <CardContent>
                 <Separator className="mb-2" />
-                <div className="scroll-m-20 text-base tracking-tight flex items-center gap-x-2"><span className="font-semibold">E10</span> <div className="text-xs bg-muted text-muted-foreground px-2.5 py-0.5 rounded-lg inline-block">
-                    Last updated {station.prices.find(price => price.fuelType === 'E10')?.lastUpdatedUTC
-                        ? <span className="font-semibold">{`${formatDistanceToNow(new Date(station.prices.find(s => s.fuelType === 'E10')?.lastUpdatedUTC || Date.now()))} ago`}</span>
-                        : "N/A"
-                    }
-                </div></div>
+                <div className="scroll-m-20 text-base tracking-tight flex items-center gap-x-2"><span className="font-semibold">E10</span> <div className="text-xs inline-block">
+                    <span className="bg-muted text-muted-foreground rounded-lg px-2.5 py-0.5 ">
+                        Reported by station {station.prices.find(price => price.fuelType === 'E10')?.lastUpdatedUTC
+                            ? <span className="font-semibold">{`${formatDistanceToNow(new Date(station.prices.find(s => s.fuelType === 'E10')?.lastUpdatedUTC || Date.now()))} ago`}</span>
+                            : "N/A"
+                        }
+                    </span>
+                </div>
+                </div>
                 <div className="flex items-baseline gap-x-2">
                     <div className="text-xl font-bold">{((station.prices.find(price => price.fuelType === 'E10')?.price ?? 0) / 100 * 30).toLocaleString("en-AU", { style: "currency", currency: "AUD" })}</div>
                     <p className="text-xs text-muted-foreground">

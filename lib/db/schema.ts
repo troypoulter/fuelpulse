@@ -1,6 +1,7 @@
 import { relations, sql } from "drizzle-orm";
 import { text, integer, sqliteTable, real, unique } from "drizzle-orm/sqlite-core";
-import { createInsertSchema } from 'drizzle-zod';
+import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
+import { z } from "zod";
 
 export const stations = sqliteTable('stations', {
     id: integer('id').primaryKey(),
@@ -18,6 +19,9 @@ export const stationsRelations = relations(stations, ({ many }) => ({
 }))
 
 export const insertStationSchema = createInsertSchema(stations);
+export const selectStationSchema = createSelectSchema(stations);
+export type Station = z.infer<typeof selectStationSchema>;
+export type StationWithPrices = Station & { prices: Price[] };
 
 export const prices = sqliteTable('prices', {
     id: integer('id').primaryKey(),
@@ -39,3 +43,5 @@ export const pricesRelations = relations(prices, ({ one }) => ({
 }))
 
 export const insertPriceSchema = createInsertSchema(prices);
+export const selectPriceSchema = createSelectSchema(prices);
+export type Price = z.infer<typeof selectPriceSchema>;

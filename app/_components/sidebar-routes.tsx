@@ -1,12 +1,12 @@
 "use client";
 
-import { Layout, Fuel } from "lucide-react";
+import { Home, Fuel } from "lucide-react";
 import { SidebarItem } from "./sidebar-item";
 import { Dispatch, SetStateAction } from "react";
 
 const routes = [
     {
-        icon: Layout,
+        icon: Home,
         label: "Home",
         href: "/"
     },

@@ -12,9 +12,7 @@ export default function Loading() {
                         <Skeleton className="h-4 w-[200px]" />
                     </CardHeader>
                     <CardContent>
-                        <Skeleton className="h-4 mb-2 w-[100px]" />
-                        <Skeleton className="h-4 mb-2 w-[100px]" />
-                        <Skeleton className="h-4 mb-2 w-[100px]" />
+                        <Skeleton className="h-4 w-[100px]" />
                     </CardContent>
                 </Card>
             ))}

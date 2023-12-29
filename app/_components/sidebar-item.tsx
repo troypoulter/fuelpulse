@@ -36,15 +36,15 @@ export const SidebarItem = (
             onClick={onClick}
             type="button"
             className={cn(
-                "flex items-center gap-x-2 text-primary text-sm pl-6 md:p-4 rounded-lg transition-all hover:bg-muted",
-                isActive && "bg-muted font-medium text-blue-500"
+                "flex items-center gap-x-2 text-slate-500 text-sm pl-6 md:p-4 rounded-lg transition-all hover:bg-muted",
+                isActive && "bg-muted font-medium text-primary"
             )}
         >
             <div className="flex items-center gap-x-2 py-4">
                 <Icon size={22}
                     className={cn(
-                        "text-primary",
-                        isActive && "font-medium text-blue-500")}
+                        "text-slate-500",
+                        isActive && "font-medium text-primary")}
                 />
                 {label}
             </div>

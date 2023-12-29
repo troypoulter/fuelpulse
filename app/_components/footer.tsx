@@ -14,7 +14,7 @@ export function Footer() {
                         >
                             troypoulter
                         </a>
-                        . The source code will be made available on GitHub in the future.
+                        .
                     </p>
                 </div>
             </div>

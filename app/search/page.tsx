@@ -35,7 +35,7 @@ export default async function SearchPage({
 
         const stationsWithDistance = stations.map(station => ({
             ...station,
-            distance: parseFloat(haversineDistance(parsedLat!, parsedLong!, station.latitude, station.longitude).toFixed(2))
+            distance: parseFloat(haversineDistance(parsedLat!, parsedLong!, station.latitude, station.longitude).toFixed(1))
         }))
             .filter(station => station.distance <= radius)
             .filter(station => station.prices.some(price => price.fuelType === 'E10'))

@@ -2,6 +2,7 @@ import { db } from "@/lib/db";
 import { StationCard } from "./_components/station-card";
 import { haversineDistance } from "@/lib/utils";
 import Loading from "./loading";
+import { eq } from "drizzle-orm";
 
 
 export default async function SearchPage({
@@ -28,17 +29,25 @@ export default async function SearchPage({
     }
 
     if (parsedLat !== null && parsedLong !== null) {
-        const stations = await db.query.stations.findMany({
-            with: {
-                prices: true
-            }
-        });
+        const stations = await db.query.stations.findMany();
 
-        const stationsWithDistance = stations.map(station => ({
+        const stationsWithDistanceMiddle = stations.map(station => ({
             ...station,
             distance: parseFloat(haversineDistance(parsedLat!, parsedLong!, station.latitude, station.longitude).toFixed(1))
         }))
             .filter(station => station.distance <= radius)
+
+        const stationsWithDistanceAgain = await db.query.stations.findMany({
+            with: {
+                prices: true
+            },
+            where: (station, { inArray }) => inArray(station.id, stationsWithDistanceMiddle.map(station => station.id))
+        });
+
+        const stationsWithDistance = stationsWithDistanceAgain.map(station => ({
+            ...station,
+            distance: stationsWithDistanceMiddle.find(s => s.id === station.id)?.distance ?? 0
+        }))
             .filter(station => station.prices.some(price => price.fuelType === 'E10'))
             .sort((a, b) => a.distance - b.distance)
             .slice(0, 10);

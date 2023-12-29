@@ -7,7 +7,7 @@ import { Footer } from './_components/footer'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Fuel Sense',
+  title: 'Fuel Pulse',
   description: 'Find the best fuel price in Australia',
 }
 

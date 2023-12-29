@@ -2,7 +2,6 @@ import { db } from "@/lib/db";
 import { StationCard } from "./_components/station-card";
 import { haversineDistance } from "@/lib/utils";
 import Loading from "./loading";
-import { eq } from "drizzle-orm";
 
 
 export default async function SearchPage({
@@ -10,9 +9,8 @@ export default async function SearchPage({
 }: {
     searchParams?: { [key: string]: string | string[] | undefined };
 }) {
-    const { lat, long } = searchParams as { [key: string]: string };
+    const { lat, long, fuelType } = searchParams as { [key: string]: string };
     const radius = 10;
-    const fuelType = 'E10';
 
     let parsedLat: number | null = null;
     let parsedLong: number | null = null;
@@ -29,7 +27,7 @@ export default async function SearchPage({
         }
     }
 
-    if (parsedLat !== null && parsedLong !== null) {
+    if (parsedLat !== null && parsedLong !== null && fuelType) {
         const stations = await db.query.stations.findMany();
 
         const stationsWithDistanceMiddle = stations.map(station => ({

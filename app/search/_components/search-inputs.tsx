@@ -21,6 +21,7 @@ export const SearchInputs = () => {
                 const params = new URLSearchParams(searchParams);
                 params.set('lat', latitude.toString());
                 params.set('long', longitude.toString());
+                params.set('fuelType', 'E10');
                 router.push(`${pathname}?${params.toString()}`);
                 setLoading(false);
             }, (error) => {

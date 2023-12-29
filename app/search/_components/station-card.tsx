@@ -52,6 +52,7 @@ export const StationCard = ({ station }: { station: StationWithPricesAndDistance
                                         <TableHead>Fuel Type</TableHead>
                                         <TableHead>Cost</TableHead>
                                         <TableHead>Per Litre</TableHead>
+                                        <TableHead>Date</TableHead>
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
@@ -60,6 +61,7 @@ export const StationCard = ({ station }: { station: StationWithPricesAndDistance
                                             <TableCell className="font-semibold">{price.fuelType}</TableCell>
                                             <TableCell>{(price.price / 100 * 30).toLocaleString("en-AU", { style: "currency", currency: "AUD" })}</TableCell>
                                             <TableCell>{price.price}c/L</TableCell>
+                                            <TableCell>{price.lastUpdatedRaw}</TableCell>
                                         </TableRow>
                                     ))}
                                 </TableBody>

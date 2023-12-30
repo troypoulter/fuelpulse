@@ -13,17 +13,18 @@ import {
     AccordionItem,
     AccordionTrigger,
 } from "@/components/ui/accordion"
-import { Separator } from "@/components/ui/separator";
 import { formatDistanceToNow } from 'date-fns';
 import { StationWithPricesAndDistance } from "@/lib/db/schema";
 import { Button } from '@/components/ui/button';
 import { MapPinned } from 'lucide-react';
 
-export const StationCard = ({ station, primaryFuelType }: { station: StationWithPricesAndDistance, primaryFuelType: string }) => {
-    // https://maps.google.com/?saddr=Current+Location&daddr=656%20WARRINGAH%20RD,%20FORESTVILLE%20NSW%202087
+export const StationCard = ({ station, primaryFuelType, lowestPrice }: { station: StationWithPricesAndDistance, primaryFuelType: string, lowestPrice: number }) => {
+    const primaryFuel = station.prices.find(s => s.fuelType === primaryFuelType)!;
+    const priceDifference = (((primaryFuel.price ?? 0) / 100 * 30) - (lowestPrice !== Infinity ? lowestPrice / 100 * 30 : 0)).toFixed(2);
+
     return (
         <Card key={station.id}>
-            <CardHeader className="flex flex-row items-center">
+            <CardHeader className="flex flex-row items-center pb-0">
                 <div className="flex flex-col gap-y-1 mr-2">
                     <CardTitle className="flex flex-row font-medium">{station.name}</CardTitle>
                     <CardDescription>{station.address}</CardDescription>
@@ -35,30 +36,21 @@ export const StationCard = ({ station, primaryFuelType }: { station: StationWith
                 </Button>
             </CardHeader>
             <CardContent>
-                {/* <Separator className="mb-2" /> */}
-                {/* <div className="flex items-baseline gap-x-2">
-                    <div className="text-xl font-bold"><span className="tracking-tight font-normal text-sm">{primaryFuelType}</span> {((station.prices.find(price => price.fuelType === primaryFuelType)?.price ?? 0) / 100 * 30).toLocaleString("en-AU", { style: "currency", currency: "AUD" })}</div>
-                    <p className="text-xs text-muted-foreground">
-                        (<span className="font-bold">{station.prices.find(s => s.fuelType === primaryFuelType)?.price}</span>c/L for 30L)
-                    </p>
-                </div> */}
-                {/* <Separator className="mt-2" /> */}
                 <Accordion type="single" collapsible className="w-full">
                     <AccordionItem value="item-1">
-                        {/* <AccordionTrigger className="text-sm">View all {station.prices.length} fuel prices</AccordionTrigger> */}
                         <AccordionTrigger>
-                            <div className="flex items-baseline gap-x-2">
-                                <div className="text-xl font-bold"><span className="tracking-tight font-normal text-sm">{primaryFuelType}</span> {((station.prices.find(price => price.fuelType === primaryFuelType)?.price ?? 0) / 100 * 30).toLocaleString("en-AU", { style: "currency", currency: "AUD" })}</div>
-                                <p className="text-xs text-muted-foreground">
-                                    (<span className="font-bold">{station.prices.find(s => s.fuelType === primaryFuelType)?.price}</span>c/L for 30L)
-                                </p>
+                            <div className="flex items-baseline gap-x-1">
+                                <div className="text-xl font-bold"><span className="tracking-tight font-normal text-sm">{primaryFuelType}</span> {((primaryFuel.price ?? 0) / 100 * 30).toLocaleString("en-AU", { style: "currency", currency: "AUD" })}</div>
+                                <span className="text-xs text-muted-foreground">
+                                    +${priceDifference} (<span className="font-bold">{primaryFuel.price}</span>c/L for 30L)
+                                </span>
                             </div>
                         </AccordionTrigger>
                         <AccordionContent>
                             <div className="text-xs mb-2 flex justify-center items-center">
                                 <span className="bg-muted text-muted-foreground rounded-lg px-2.5 py-0.5 ">
-                                    Reported by station {station.prices.find(price => price.fuelType === primaryFuelType)?.lastUpdatedUTC
-                                        ? <span className="font-semibold">{`${formatDistanceToNow(new Date(station.prices.find(s => s.fuelType === primaryFuelType)?.lastUpdatedUTC || Date.now()))} ago`}</span>
+                                    Reported by station {primaryFuel.lastUpdatedUTC
+                                        ? <span className="font-semibold">{`${formatDistanceToNow(new Date(primaryFuel.lastUpdatedUTC || Date.now()))} ago`}</span>
                                         : "N/A"
                                     }
                                 </span>

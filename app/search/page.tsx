@@ -63,14 +63,28 @@ export default async function SearchPage({
             };
         })
             .filter(station => station.prices.some(price => price.fuelType === fuelType))
-            .sort((a, b) => a.distance - b.distance);
+            // .sort((a, b) => a.distance - b.distance);
+            .sort((a, b) => {
+                const priceA = a.prices.find(price => price.fuelType === fuelType)?.price ?? Infinity;
+                const priceB = b.prices.find(price => price.fuelType === fuelType)?.price ?? Infinity;
+                return priceA - priceB;
+            });
         // THOUGHT: Remove the limit for now so they get as many options as they want.
         // .slice(0, 20);
+
+        const lowestPrice = stationsWithDistance.reduce((lowest, station) => {
+            let stationPrice = station.prices.find(price => price.fuelType === fuelType)!.price;
+            if (stationPrice < lowest) {
+                return stationPrice;
+            } else {
+                return lowest;
+            }
+        }, Infinity);
 
 
         return (
             <div className="grid gap-2 md:gap-4 grid-cols-1 md:grid-cols-3 lg:grid-cols-4">
-                {stationsWithDistance?.map(station => (<StationCard key={station.id} station={station} primaryFuelType={fuelType} />))}
+                {stationsWithDistance?.map(station => (<StationCard key={station.id} station={station} primaryFuelType={fuelType} lowestPrice={lowestPrice} />))}
             </div>
         )
     }

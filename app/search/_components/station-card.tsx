@@ -38,7 +38,7 @@ export const StationCard = ({ station, primaryFuelType }: { station: StationWith
                 <div className="flex items-baseline gap-x-2">
                     <div className="text-xl font-bold">{((station.prices.find(price => price.fuelType === primaryFuelType)?.price ?? 0) / 100 * 30).toLocaleString("en-AU", { style: "currency", currency: "AUD" })}</div>
                     <p className="text-xs text-muted-foreground">
-                        ({station.prices.find(s => s.fuelType === primaryFuelType)?.price}c/L for 30L)
+                        (<span className="font-bold">{station.prices.find(s => s.fuelType === primaryFuelType)?.price}</span>c/L for 30L)
                     </p>
                 </div>
                 <Separator className="mt-2" />

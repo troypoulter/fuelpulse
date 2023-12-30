@@ -27,8 +27,6 @@ export default async function SearchPage({
         }
     }
 
-    console.log(parsedRadius);
-
     if (parsedLat !== null && parsedLong !== null && fuelType) {
         const stations = await db.query.stations.findMany();
 
@@ -70,7 +68,7 @@ export default async function SearchPage({
 
 
         return (
-            <div className="grid gap-6 md:gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-2 md:gap-4 grid-cols-1 md:grid-cols-3 lg:grid-cols-4">
                 {stationsWithDistance?.map(station => (<StationCard key={station.id} station={station} primaryFuelType={fuelType} />))}
             </div>
         )

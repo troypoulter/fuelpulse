@@ -9,11 +9,11 @@ export default async function SearchPage({
 }: {
     searchParams?: { [key: string]: string | string[] | undefined };
 }) {
-    const { lat, long, fuelType } = searchParams as { [key: string]: string };
-    const radius = 10;
+    const { lat, long, fuelType, radius } = searchParams as { [key: string]: string };
 
     let parsedLat: number | null = null;
     let parsedLong: number | null = null;
+    const parsedRadius = parseFloat(radius ?? "0");
 
     // Try to parse latitude and longitude
     if (lat && long) {
@@ -27,6 +27,8 @@ export default async function SearchPage({
         }
     }
 
+    console.log(parsedRadius);
+
     if (parsedLat !== null && parsedLong !== null && fuelType) {
         const stations = await db.query.stations.findMany();
 
@@ -34,7 +36,7 @@ export default async function SearchPage({
             ...station,
             distance: parseFloat(haversineDistance(parsedLat!, parsedLong!, station.latitude, station.longitude).toFixed(1))
         }))
-            .filter(station => station.distance <= radius)
+            .filter(station => station.distance <= parsedRadius)
 
         const stationsWithDistanceAgain = await db.query.stations.findMany({
             with: {
@@ -64,7 +66,7 @@ export default async function SearchPage({
         })
             .filter(station => station.prices.some(price => price.fuelType === fuelType))
             .sort((a, b) => a.distance - b.distance)
-            .slice(0, 10);
+            .slice(0, 20);
 
 
         return (

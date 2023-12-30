@@ -27,7 +27,7 @@ export const SearchInputs = () => {
     const [latitude, setLatitude] = useState<string | undefined>(undefined);
     const [longitude, setLongitude] = useState<string | undefined>(undefined);
     const [fuelType, setFuelType] = useState("E10");
-    const [radius, setRadius] = useState([15]);
+    const [radius, setRadius] = useState([10]);
 
     const setGeolocationInURL = () => {
         setLoading(true);
@@ -64,11 +64,15 @@ export const SearchInputs = () => {
                 params.set('fuelType', fuelType);
             }
 
+            if (radius && radius.length > 0) {
+                params.set('radius', (radius[0] ?? 10).toString());
+            }
+
             router.push(`${pathname}?${params.toString()}`);
         }
 
         updateURLQueryParams();
-    }, [fuelType, latitude, longitude, pathname, router, searchParams]);
+    }, [fuelType, radius, latitude, longitude, pathname, router, searchParams]);
 
     useEffect(() => {
         if (!searchParams.has('lat') && !searchParams.has('long')) {
@@ -76,8 +80,11 @@ export const SearchInputs = () => {
         }
 
         if (searchParams.has('fuelType')) {
-            console.log("here")
             setFuelType(searchParams.get('fuelType')!);
+        }
+
+        if (searchParams.has('radius')) {
+            setRadius([Number(searchParams.get('radius')!)]);
         }
     }, [searchParams]);
 
@@ -107,7 +114,7 @@ export const SearchInputs = () => {
                         {radius}km
                     </span>
                 </div>
-                <Slider defaultValue={radius} onValueChange={setRadius} max={50} min={5} step={5} aria-label="radius" />
+                <Slider defaultValue={radius} onValueChange={setRadius} max={50} min={2} step={2} aria-label="radius" />
             </div>
         </div>
     )

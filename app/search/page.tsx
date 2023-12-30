@@ -42,7 +42,7 @@ export default async function SearchPage({
                     // Trying to reduce the size returned as more prices are retrieved by ordering
                     // by ID assuming the later prices are more recent and then limiting to 15.
                     orderBy: (prices, { desc }) => [desc(prices.id)],
-                    limit: 15
+                    limit: 10
                 }
             },
             where: (station, { inArray }) => inArray(station.id, stationsWithDistanceMiddle.map(station => station.id))

@@ -3,8 +3,18 @@
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectLabel,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select"
 import { Loader2, LocateFixed } from "lucide-react";
 import { useState } from 'react';
+import { fuelTypes } from "@/lib/constants";
 
 export const SearchInputs = () => {
     const router = useRouter();
@@ -12,17 +22,17 @@ export const SearchInputs = () => {
     const searchParams = useSearchParams()!;
 
     const [loading, setLoading] = useState(false);
+    const [latitude, setLatitude] = useState<string | undefined>(undefined);
+    const [longitude, setLongitude] = useState<string | undefined>(undefined);
+    const [fuelType, setFuelType] = useState("E10");
 
     const setGeolocationInURL = () => {
         setLoading(true);
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition((position) => {
                 const { latitude, longitude } = position.coords;
-                const params = new URLSearchParams(searchParams);
-                params.set('lat', latitude.toString());
-                params.set('long', longitude.toString());
-                params.set('fuelType', 'E10');
-                router.push(`${pathname}?${params.toString()}`);
+                setLatitude(latitude.toString());
+                setLongitude(longitude.toString());
                 setLoading(false);
             }, (error) => {
                 console.log(error);
@@ -39,13 +49,50 @@ export const SearchInputs = () => {
     }
 
     useEffect(() => {
+        const updateURLQueryParams = () => {
+            const params = new URLSearchParams(searchParams);
+
+            if (latitude && longitude) {
+                params.set('lat', latitude);
+                params.set('long', longitude);
+            }
+
+            if (fuelType) {
+                params.set('fuelType', fuelType);
+            }
+
+            router.push(`${pathname}?${params.toString()}`);
+        }
+
+        updateURLQueryParams();
+    }, [fuelType, latitude, longitude, pathname, router, searchParams]);
+
+    useEffect(() => {
         if (!searchParams.has('lat') && !searchParams.has('long')) {
             setGeolocationInURL();
         }
-    }, []);
+
+        if (searchParams.has('fuelType')) {
+            console.log("here")
+            setFuelType(searchParams.get('fuelType')!);
+        }
+    }, [searchParams]);
 
     return (
-        <div className="flex items-center justify-center">
+        <div className="flex items-center justify-center gap-x-2">
+            <Select value={fuelType} onValueChange={setFuelType}>
+                <SelectTrigger className="w-[180px]">
+                    <SelectValue placeholder="Select a fuel type" />
+                </SelectTrigger>
+                <SelectContent>
+                    <SelectGroup>
+                        <SelectLabel>Fuel Types</SelectLabel>
+                        {fuelTypes.map((fuelType) => (
+                            <SelectItem key={fuelType.code} value={fuelType.code}>{fuelType.name} ({fuelType.code})</SelectItem>
+                        ))}
+                    </SelectGroup>
+                </SelectContent>
+            </Select>
             <Button disabled={loading} variant="outline" onClick={() => setGeolocationInURL()}>
                 {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <LocateFixed className="mr-2 h-4 w-4" />} Use my location
             </Button>

@@ -20,11 +20,6 @@ export const fuelTypes: FuelType[] = [
         name: "Unleaded 91",
         isPetrol: true
     },
-    {
-        code: "E85",
-        name: "Ethanol 105",
-        isPetrol: true
-    },
     // {
     //     code: "P95-P98",
     //     name: "Premium 95 / Premium 98",
@@ -56,33 +51,38 @@ export const fuelTypes: FuelType[] = [
         isPetrol: true
     },
     {
-        code: "EV",
-        name: "EV charge",
-        isPetrol: false
+        code: "E85",
+        name: "Ethanol 105",
+        isPetrol: true
     },
     {
         code: "LPG",
         name: "LPG",
         isPetrol: true
     },
-    // {
-    //     code: "B20",
-    //     name: "Biodiesel 20",
-    //     isPetrol: true
-    // },
-    // {
-    //     code: "LNG",
-    //     name: "LNG",
-    //     isPetrol: false
-    // },
-    // {
-    //     code: "H2",
-    //     name: "Hydrogen",
-    //     isPetrol: false
-    // },
-    // {
-    //     code: "CNG",
-    //     name: "CNG/NGV",
-    //     isPetrol: false
-    // }
+    {
+        code: "EV",
+        name: "EV charge",
+        isPetrol: false
+    },
+    {
+        code: "B20",
+        name: "Biodiesel 20",
+        isPetrol: true
+    },
+    {
+        code: "LNG",
+        name: "LNG",
+        isPetrol: false
+    },
+    {
+        code: "H2",
+        name: "Hydrogen",
+        isPetrol: false
+    },
+    {
+        code: "CNG",
+        name: "CNG/NGV",
+        isPetrol: false
+    }
 ]

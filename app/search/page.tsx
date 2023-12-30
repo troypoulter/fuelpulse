@@ -63,8 +63,9 @@ export default async function SearchPage({
             };
         })
             .filter(station => station.prices.some(price => price.fuelType === fuelType))
-            .sort((a, b) => a.distance - b.distance)
-            .slice(0, 20);
+            .sort((a, b) => a.distance - b.distance);
+        // THOUGHT: Remove the limit for now so they get as many options as they want.
+        // .slice(0, 20);
 
 
         return (

@@ -16,13 +16,23 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { formatDistanceToNow } from 'date-fns';
 import { StationWithPricesAndDistance } from "@/lib/db/schema";
+import { Button } from '@/components/ui/button';
+import { MapPinned } from 'lucide-react';
 
 export const StationCard = ({ station, primaryFuelType }: { station: StationWithPricesAndDistance, primaryFuelType: string }) => {
+    // https://maps.google.com/?saddr=Current+Location&daddr=656%20WARRINGAH%20RD,%20FORESTVILLE%20NSW%202087
     return (
         <Card key={station.id}>
-            <CardHeader>
-                <CardTitle className="flex flex-row">{station.name} ({station.distance}km)</CardTitle>
-                <CardDescription>{station.address}</CardDescription>
+            <CardHeader className="flex flex-row items-center">
+                <div className="flex flex-col gap-y-1 mr-2">
+                    <CardTitle className="flex flex-row">{station.name}</CardTitle>
+                    <CardDescription>{station.address}</CardDescription>
+                </div>
+                <Button variant="outline" className="ml-auto self-start" size="sm" asChild>
+                    <a href={`https://maps.google.com/?saddr=Current+Location&daddr=${encodeURIComponent(station.address)}`} target="_blank" rel="noopener noreferrer">
+                        <MapPinned className="mr-1 h-4 w-4" />{station.distance}km
+                    </a>
+                </Button>
             </CardHeader>
             <CardContent>
                 <Separator className="mb-2" />

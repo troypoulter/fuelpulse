@@ -92,7 +92,7 @@ export const SearchInputs = () => {
     return (
         <div className="flex flex-row flex-wrap items-center justify-center gap-x-4 gap-y-2">
             <Button disabled={loading} variant="outline" onClick={() => setGeolocationInURL()}>
-                {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <LocateFixed className="mr-2 h-4 w-4" />} Use my location
+                {loading ? <Loader2 className="mr-1 h-4 w-4 animate-spin" /> : <LocateFixed className="mr-1 h-4 w-4" />} Use my location
             </Button>
             <Select value={fuelType} onValueChange={setFuelType}>
                 <SelectTrigger className="w-[160px]">

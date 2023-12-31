@@ -38,8 +38,8 @@ export const StationCard = ({ station, primaryFuelType, lowestPrice }: { station
         <Card key={station.id}>
             <CardHeader className="flex flex-row items-center pb-0">
                 <div className="flex flex-col gap-y-1 mr-2">
-                    <CardTitle className="flex flex-row font-medium">{station.name}</CardTitle>
-                    <CardDescription>{station.address}</CardDescription>
+                    <CardTitle className="flex flex-row font-medium lg:h-9 lg:overflow-auto">{station.name}</CardTitle>
+                    <CardDescription className="lg:h-10 lg:overflow-auto">{station.address}</CardDescription>
                 </div>
                 <Button variant="outline" className="ml-auto self-start" size="sm" asChild>
                     <a href={`https://maps.google.com/?saddr=Current+Location&daddr=${encodeURIComponent(station.address)}`} target="_blank" rel="noopener noreferrer">
@@ -51,8 +51,8 @@ export const StationCard = ({ station, primaryFuelType, lowestPrice }: { station
                 <Accordion type="single" collapsible className="w-full">
                     <AccordionItem value="item-1">
                         <AccordionTrigger>
-                            <div className="flex flex-col gap-y-1">
-                                <div className={cn("inline-flex justify-center items-baseline rounded-lg bg-opacity-20 px-1.5 py-1 text-xs font-semibold", getPriceDifferenceColour(primaryFuel.price))}>+${priceDifference} (+{priceDifferenceCents}c/L)</div>
+                            <div className="flex flex-col items-start">
+                                <div className={cn("inline-flex justify-start items-baseline rounded-lg bg-opacity-20 px-1.5 py-1 text-xs font-medium", getPriceDifferenceColour(primaryFuel.price))}>+${priceDifference} (+{priceDifferenceCents}c/L)</div>
                                 <div className="flex items-baseline gap-x-1">
                                     <div className="text-xl font-bold"><span className="tracking-tight font-normal text-xs">{primaryFuelType}</span> {((primaryFuel.price ?? 0) / 100 * fuelTank).toLocaleString("en-AU", { style: "currency", currency: "AUD" })}</div>
                                     <span className="text-xs text-muted-foreground">

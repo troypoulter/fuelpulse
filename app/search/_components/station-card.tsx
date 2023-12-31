@@ -17,10 +17,22 @@ import { formatDistanceToNow } from 'date-fns';
 import { StationWithPricesAndDistance } from "@/lib/db/schema";
 import { Button } from '@/components/ui/button';
 import { MapPinned } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 export const StationCard = ({ station, primaryFuelType, lowestPrice }: { station: StationWithPricesAndDistance, primaryFuelType: string, lowestPrice: number }) => {
+    const fuelTank = 30;
     const primaryFuel = station.prices.find(s => s.fuelType === primaryFuelType)!;
-    const priceDifference = (((primaryFuel.price ?? 0) / 100 * 30) - (lowestPrice !== Infinity ? lowestPrice / 100 * 30 : 0)).toFixed(2);
+    const priceDifferenceNumber = (((primaryFuel.price ?? 0) / 100 * fuelTank) - (lowestPrice !== Infinity ? lowestPrice / 100 * fuelTank : 0));
+    const priceDifference = priceDifferenceNumber.toFixed(2);
+
+    const priceDifferenceCents = (((primaryFuel.price ?? 0)) - (lowestPrice !== Infinity ? lowestPrice : 0)).toFixed(1);
+
+    const getPriceDifferenceColour = (price: number) => {
+        if (price == lowestPrice) return 'bg-emerald-500 text-emerald-500';
+        if (price < lowestPrice + 12.5) return 'bg-yellow-500 text-yellow-500';
+        if (price < lowestPrice + 25) return 'bg-orange-500 text-orange-500';
+        return 'bg-red-500 text-red-500';
+    }
 
     return (
         <Card key={station.id}>
@@ -39,11 +51,14 @@ export const StationCard = ({ station, primaryFuelType, lowestPrice }: { station
                 <Accordion type="single" collapsible className="w-full">
                     <AccordionItem value="item-1">
                         <AccordionTrigger>
-                            <div className="flex items-baseline gap-x-1">
-                                <div className="text-xl font-bold"><span className="tracking-tight font-normal text-sm">{primaryFuelType}</span> {((primaryFuel.price ?? 0) / 100 * 30).toLocaleString("en-AU", { style: "currency", currency: "AUD" })}</div>
-                                <span className="text-xs text-muted-foreground">
-                                    +${priceDifference} (<span className="font-bold">{primaryFuel.price}</span>c/L for 30L)
-                                </span>
+                            <div className="flex flex-col gap-y-1">
+                                <div className={cn("inline-flex justify-center items-baseline rounded-lg bg-opacity-20 px-1.5 py-1 text-xs font-semibold", getPriceDifferenceColour(primaryFuel.price))}>+${priceDifference} (+{priceDifferenceCents}c/L)</div>
+                                <div className="flex items-baseline gap-x-1">
+                                    <div className="text-xl font-bold"><span className="tracking-tight font-normal text-xs">{primaryFuelType}</span> {((primaryFuel.price ?? 0) / 100 * fuelTank).toLocaleString("en-AU", { style: "currency", currency: "AUD" })}</div>
+                                    <span className="text-xs text-muted-foreground">
+                                        (<span className="font-bold">{primaryFuel.price}</span>c/L for 30L)
+                                    </span>
+                                </div>
                             </div>
                         </AccordionTrigger>
                         <AccordionContent>
@@ -67,7 +82,7 @@ export const StationCard = ({ station, primaryFuelType, lowestPrice }: { station
                                     {station.prices.map(price => (
                                         <TableRow key={price.fuelType}>
                                             <TableCell className="font-semibold">{price.fuelType}</TableCell>
-                                            <TableCell>{(price.price / 100 * 30).toLocaleString("en-AU", { style: "currency", currency: "AUD" })}</TableCell>
+                                            <TableCell>{(price.price / 100 * fuelTank).toLocaleString("en-AU", { style: "currency", currency: "AUD" })}</TableCell>
                                             <TableCell>{price.price}c/L</TableCell>
                                         </TableRow>
                                     ))}

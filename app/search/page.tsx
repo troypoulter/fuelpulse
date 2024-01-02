@@ -2,7 +2,9 @@ import { db } from "@/lib/db";
 import { StationCard } from "./_components/station-card";
 import { haversineDistance } from "@/lib/utils";
 import Loading from "./loading";
+import { stat } from "fs/promises";
 
+export const revalidate = 3600 // revalidate the data at most every hour
 
 export default async function SearchPage({
     searchParams
@@ -28,14 +30,39 @@ export default async function SearchPage({
         }
     }
 
-    if (parsedLat !== null && parsedLong !== null && fuelType) {
+    if (parsedLat !== null && parsedLong !== null && fuelType && parsedRadius && parsedTankSize && sortBy) {
         const stations = await db.query.stations.findMany();
 
         const stationsWithDistanceMiddle = stations.map(station => ({
             ...station,
             distance: parseFloat(haversineDistance(parsedLat!, parsedLong!, station.latitude, station.longitude).toFixed(1))
         }))
-            .filter(station => station.distance <= parsedRadius)
+            .filter(station => station.distance <= parsedRadius);
+
+        if (stationsWithDistanceMiddle.length === 0) {
+            // TODO: Update to use something like https://github.com/rapideditor/country-coder when supporting more states.
+            // Rough bounds for NSW.
+            if (parsedLat < -37.505 || parsedLat > -28.157 || parsedLong < 140.999 || parsedLong > 153.552) {
+                return (
+                    <div className="flex flex-col items-center justify-center gap-y-4 h-full">
+                        <div className="flex flex-col gap-y-2">
+                            <h2 className="text-2xl font-bold text-center">No stations found</h2>
+                            <p className="text-gray-500">You are likely outside of New South Wales, Australia, which is currently the only area supported unfortunately.</p>
+                        </div>
+                    </div>
+                )
+            }
+
+            // TODO: Use more descriptive return for not found at different stages.
+            return (
+                <div className="flex flex-col items-center justify-center gap-y-4 h-full">
+                    <div className="flex flex-col gap-y-2 text-center">
+                        <h2 className="text-2xl font-bold">No stations found</h2>
+                        <p className="text-gray-500">Try increasing the search radius.</p>
+                    </div>
+                </div>
+            )
+        }
 
         const stationsWithDistanceAgain = await db.query.stations.findMany({
             with: {
@@ -48,6 +75,17 @@ export default async function SearchPage({
             },
             where: (station, { inArray }) => inArray(station.id, stationsWithDistanceMiddle.map(station => station.id))
         });
+
+        if (stationsWithDistanceAgain.length === 0) {
+            return (
+                <div className="flex flex-col items-center justify-center gap-y-4 h-full">
+                    <div className="flex flex-col gap-y-2 text-center">
+                        <h2 className="text-2xl font-bold">No stations found</h2>
+                        <p className="text-gray-500">Try increasing the search radius.</p>
+                    </div>
+                </div>
+            )
+        }
 
         const stationsWithDistance = stationsWithDistanceAgain.map(station => {
             const uniquePrices = station.prices.reduce((acc: { [key: string]: any }, price) => {
@@ -76,6 +114,17 @@ export default async function SearchPage({
                 }
             })
             .slice(0, 20);
+
+        if (stationsWithDistance.length === 0) {
+            return (
+                <div className="flex flex-col items-center justify-center gap-y-4 h-full">
+                    <div className="flex flex-col gap-y-2 text-center">
+                        <h2 className="text-2xl font-bold">No stations found</h2>
+                        <p className="text-gray-500">Try increasing the search radius.</p>
+                    </div>
+                </div>
+            )
+        }
 
         const lowestPrice = stationsWithDistance.reduce((lowest, station) => {
             let stationPrice = station.prices.find(price => price.fuelType === fuelType)!.price;

@@ -113,7 +113,7 @@ export const SearchInputs = () => {
             <Button disabled={loading} variant="outline" onClick={() => setGeolocationInURL()}>
                 {loading ? <Loader2 className="mr-1 h-4 w-4 animate-spin" /> : <LocateFixed className="mr-1 h-4 w-4" />} Use my location
             </Button>
-            <Select defaultValue="E10" value={fuelType} onValueChange={setFuelType}>
+            <Select value={fuelType} onValueChange={setFuelType}>
                 <SelectTrigger className="w-[160px]">
                     <SelectValue placeholder="Select a fuel type" />
                 </SelectTrigger>

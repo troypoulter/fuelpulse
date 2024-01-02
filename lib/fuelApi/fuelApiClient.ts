@@ -8,7 +8,7 @@ const BASE_FUEL_API_URL = 'https://api.onegov.nsw.gov.au'
 export const fuelApiClient = {
   async getOAuth(options: RequestInit = {}) {
     const headers = new Headers(options.headers);
-    headers.set('Authorization', `Basic ${Buffer.from(`${env.FUEL_API_KEY}:${env.FUEL_SECRET}`).toString("base64")}`);
+    headers.set('Authorization', `Basic ${Buffer.from(`${env.AUSTRALIA_NSW_FUEL_API_KEY}:${env.AUSTRALIA_NSW_FUEL_SECRET}`).toString("base64")}`);
     headers.set('Accept', 'application/json');
 
     const fetchOptions = {
@@ -28,7 +28,7 @@ export const fuelApiClient = {
 
     const headers = new Headers(options.headers);
     headers.set('Authorization', `Bearer ${access_token}`);
-    headers.set('apikey', env.FUEL_API_KEY);
+    headers.set('apikey', env.AUSTRALIA_NSW_FUEL_API_KEY);
     headers.set('transactionid', transactionId);
     headers.set('requesttimestamp', requestTimestamp);
     headers.set('Accept', 'application/json');
@@ -52,7 +52,7 @@ export const fuelApiClient = {
 
     const headers = new Headers(options.headers);
     headers.set('Authorization', `Bearer ${access_token}`);
-    headers.set('apikey', env.FUEL_API_KEY);
+    headers.set('apikey', env.AUSTRALIA_NSW_FUEL_API_KEY);
     headers.set('transactionid', transactionId);
     headers.set('requesttimestamp', requestTimestamp);
     headers.set('Accept', 'application/json');

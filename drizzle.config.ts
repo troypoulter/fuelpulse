@@ -5,7 +5,7 @@ export default {
     schema: "./lib/db/schema.ts",
     out: "./lib/db/migrations",
     driver: "turso",
-    dbCredentials: env.NODE_ENV === "production" || env.USE_TURSO_LOCALLY === true ? {
+    dbCredentials: env.NODE_ENV === "production" ? {
         url: env.DATABASE_URL,
         authToken: env.DATABASE_AUTH_TOKEN
     } : {

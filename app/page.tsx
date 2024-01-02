@@ -46,6 +46,7 @@ export default async function Home() {
                     alt="Australia Coverage"
                     width={450}
                     height={450}
+                    priority
                 />
                 <div className="flex space-x-4">
                     <div className="text-emerald-500 text-lg tracking-tight font-medium">Supported</div>

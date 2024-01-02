@@ -9,6 +9,18 @@
 	},
 	"containerEnv": {
 		"WATCHPACK_POLLING": "true"
+	},
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"dbaeumer.vscode-eslint",
+				"GitHub.copilot",
+				"GitHub.copilot-chat",
+				"yoavbls.pretty-ts-errors",
+				"alexcvzz.vscode-sqlite",
+				"bradlc.vscode-tailwindcss"
+			]
+		}
 	}
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	// "features": {},

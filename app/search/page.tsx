@@ -9,7 +9,7 @@ export default async function SearchPage({
 }: {
     searchParams?: { [key: string]: string | string[] | undefined };
 }) {
-    const { lat, long, fuelType, radius, tankSize } = searchParams as { [key: string]: string };
+    const { lat, long, fuelType, radius, tankSize, sortBy } = searchParams as { [key: string]: string };
 
     let parsedLat: number | null = null;
     let parsedLong: number | null = null;
@@ -64,14 +64,18 @@ export default async function SearchPage({
             };
         })
             .filter(station => station.prices.some(price => price.fuelType === fuelType))
-            // .sort((a, b) => a.distance - b.distance);
             .sort((a, b) => {
-                const priceA = a.prices.find(price => price.fuelType === fuelType)?.price ?? Infinity;
-                const priceB = b.prices.find(price => price.fuelType === fuelType)?.price ?? Infinity;
-                return priceA - priceB;
-            });
-        // THOUGHT: Remove the limit for now so they get as many options as they want.
-        // .slice(0, 20);
+                if (sortBy === "distance") {
+                    // sort by distance
+                    return a.distance - b.distance;
+                } else {
+                    // sort by price or if sortBy is neither "price" nor "distance"
+                    const priceA = a.prices.find(price => price.fuelType === fuelType)?.price ?? Infinity;
+                    const priceB = b.prices.find(price => price.fuelType === fuelType)?.price ?? Infinity;
+                    return priceA - priceB;
+                }
+            })
+            .slice(0, 20);
 
         const lowestPrice = stationsWithDistance.reduce((lowest, station) => {
             let stationPrice = station.prices.find(price => price.fuelType === fuelType)!.price;

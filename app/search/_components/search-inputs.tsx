@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider"
 import { Label } from "@/components/ui/label"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import {
     Select,
     SelectContent,
@@ -14,7 +15,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
-import { Fuel, Loader2, LocateFixed, Radius } from "lucide-react";
+import { ArrowUpDown, Fuel, Loader2, LocateFixed, Radius } from "lucide-react";
 import { useState } from 'react';
 import { fuelTypes } from "@/lib/constants";
 
@@ -27,6 +28,7 @@ export const SearchInputs = () => {
     const [latitude, setLatitude] = useState<string | undefined>(undefined);
     const [longitude, setLongitude] = useState<string | undefined>(undefined);
     const [fuelType, setFuelType] = useState("E10");
+    const [sortBy, setSortBy] = useState("price");
     const [radius, setRadius] = useState([10]);
     const [tankSize, setTankSize] = useState([30]);
 
@@ -65,6 +67,10 @@ export const SearchInputs = () => {
                 params.set('fuelType', fuelType);
             }
 
+            if (sortBy) {
+                params.set('sortBy', sortBy);
+            }
+
             if (radius && radius.length > 0) {
                 params.set('radius', (radius[0] ?? 10).toString());
             }
@@ -77,7 +83,7 @@ export const SearchInputs = () => {
         }
 
         updateURLQueryParams();
-    }, [fuelType, radius, latitude, longitude, pathname, router, searchParams, tankSize]);
+    }, [fuelType, radius, latitude, longitude, pathname, router, searchParams, tankSize, sortBy]);
 
     useEffect(() => {
         if (!searchParams.has('lat') && !searchParams.has('long')) {
@@ -86,6 +92,10 @@ export const SearchInputs = () => {
 
         if (searchParams.has('fuelType')) {
             setFuelType(searchParams.get('fuelType')!);
+        }
+
+        if (searchParams.has('sortBy')) {
+            setSortBy(searchParams.get('sortBy')!);
         }
 
         if (searchParams.has('radius')) {
@@ -103,7 +113,7 @@ export const SearchInputs = () => {
             <Button disabled={loading} variant="outline" onClick={() => setGeolocationInURL()}>
                 {loading ? <Loader2 className="mr-1 h-4 w-4 animate-spin" /> : <LocateFixed className="mr-1 h-4 w-4" />} Use my location
             </Button>
-            <Select value={fuelType} onValueChange={setFuelType}>
+            <Select defaultValue="E10" value={fuelType} onValueChange={setFuelType}>
                 <SelectTrigger className="w-[160px]">
                     <SelectValue placeholder="Select a fuel type" />
                 </SelectTrigger>
@@ -116,10 +126,26 @@ export const SearchInputs = () => {
                     </SelectGroup>
                 </SelectContent>
             </Select>
+            <div className="grid gap-1 items-baseline">
+                <div className="flex items-center space-x-2">
+                    <ArrowUpDown className="h-4 w-4" />
+                    <Label htmlFor="sortBy">Sort By</Label>
+                </div>
+                <RadioGroup value={sortBy} onValueChange={setSortBy} defaultValue="price" className="grid-flow-col">
+                    <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="price" id="price" />
+                        <Label htmlFor="price">Price</Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="distance" id="distance" />
+                        <Label htmlFor="distance">Distance</Label>
+                    </div>
+                </RadioGroup>
+            </div>
             <div className="grid gap-2 w-[160px]">
                 <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-2">
-                        <Radius className="mr-1 h-4 w-4" />
+                        <Radius className="h-4 w-4" />
                         <Label htmlFor="radius">Radius</Label>
                     </div>
                     <span className="px-2 py-0.5 text-right text-sm text-muted-foreground">
@@ -131,8 +157,8 @@ export const SearchInputs = () => {
             <div className="grid gap-2 w-[160px]">
                 <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-2">
-                        <Fuel className="mr-1 h-4 w-4" />
-                        <Label htmlFor="radius">Tank Size</Label>
+                        <Fuel className="h-4 w-4" />
+                        <Label htmlFor="tankSize">Tank Size</Label>
                     </div>
                     <span className="px-2 py-0.5 text-right text-sm text-muted-foreground">
                         {tankSize}L

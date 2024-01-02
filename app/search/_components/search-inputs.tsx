@@ -25,8 +25,11 @@ export const SearchInputs = () => {
     const searchParams = useSearchParams()!;
 
     const [loading, setLoading] = useState(false);
-    const [latitude, setLatitude] = useState<string | undefined>(undefined);
-    const [longitude, setLongitude] = useState<string | undefined>(undefined);
+
+    // Set default location to Bondi Beach, Sydney.
+    // For the scenarios where geolocation is not supported or the user denies access.
+    const [latitude, setLatitude] = useState<string | undefined>("-33.8930404");
+    const [longitude, setLongitude] = useState<string | undefined>("151.2765367");
     const [fuelType, setFuelType] = useState("E10");
     const [sortBy, setSortBy] = useState("price");
     const [radius, setRadius] = useState([10]);

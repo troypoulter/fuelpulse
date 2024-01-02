@@ -14,6 +14,15 @@ export function Footer() {
                         >
                             troypoulter
                         </a>
+                        . The source code is available on{" "}
+                        <a
+                            href="https://github.com/troypoulter/fuelpulse"
+                            target="_blank"
+                            rel="noreferrer"
+                            className="font-medium underline underline-offset-4"
+                        >
+                            GitHub
+                        </a>
                         .
                     </p>
                 </div>

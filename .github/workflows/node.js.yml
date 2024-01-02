@@ -9,6 +9,10 @@ on:
   pull_request:
     branches: [ "main" ]
 
+env:
+  # Needed for env validation to _not_ happen when running CI checks
+  SKIP_ENV_VALIDATION: true
+
 jobs:
   build:
 

@@ -87,4 +87,4 @@ async function handler(_req: NextRequest) {
 
 // When deployed in production mode, verify the signature from QStash.
 // Otherwise, don't require signature verification for simple local usage.
-export const POST = env.NODE_ENV === "production" ? verifySignatureAppRouter(handler) : handler;
+export const POST = env.NODE_ENV === "production" || env.USE_TURSO_LOCALLY !== true ? verifySignatureAppRouter(handler) : handler;

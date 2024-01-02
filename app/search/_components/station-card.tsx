@@ -27,14 +27,14 @@ export const StationCard = ({ station, primaryFuelType, lowestPrice, tankSize }:
     const priceDifferenceCents = (((primaryFuel.price ?? 0)) - (lowestPrice !== Infinity ? lowestPrice : 0)).toFixed(1);
 
     const getPriceDifferenceColour = (price: number) => {
-        if (price == lowestPrice) return 'bg-emerald-500 text-emerald-500';
+        if (price === lowestPrice) return 'bg-emerald-500 text-emerald-500';
         if (price < lowestPrice + 12.5) return 'bg-yellow-500 text-yellow-500';
         if (price < lowestPrice + 25) return 'bg-orange-500 text-orange-500';
         return 'bg-red-500 text-red-500';
     }
 
     return (
-        <Card key={station.id}>
+        <Card key={station.id} className={cn(primaryFuel.price === lowestPrice && "border-emerald-500 border-4 border-opacity-70")}>
             <CardHeader className="flex flex-row items-center pb-0">
                 <div className="flex flex-col gap-y-1 mr-2">
                     <CardTitle className="flex flex-row font-medium lg:h-9 lg:overflow-auto">{station.name}</CardTitle>

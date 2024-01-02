@@ -58,7 +58,6 @@ body[style] {
   margin: 0 auto !important;
 }
 
-
 @layer base {
   * {
     @apply border-border;

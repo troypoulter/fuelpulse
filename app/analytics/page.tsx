@@ -12,7 +12,7 @@ export default function AnalyticsPage() {
                     You see what I see.
                 </h1>
                 <p className="text-lg text-muted-foreground sm:text-xl">
-                    Transparency is a core principle that I highly prioritize, visit the{" "}
+                    Transparency is a core principle which I highly prioritise. Visit the{" "}
                     <a
                         href="https://www.troypoulter.com/analytics/"
                         className="font-medium text-primary underline underline-offset-4"

@@ -15,7 +15,6 @@ import { db } from "@/lib/db"
 import { count } from "drizzle-orm"
 import { stations } from "@/lib/db/schema"
 
-
 export default async function Home() {
     const totalStations = await db.select({ value: count() }).from(stations);
 

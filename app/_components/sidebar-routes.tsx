@@ -1,6 +1,6 @@
 "use client";
 
-import { Home, Fuel } from "lucide-react";
+import { Home, Fuel, LineChart } from "lucide-react";
 import { SidebarItem } from "./sidebar-item";
 import { Dispatch, SetStateAction } from "react";
 
@@ -14,6 +14,11 @@ const routes = [
         icon: Fuel,
         label: "Find Fuel",
         href: "/search"
+    },
+    {
+        icon: LineChart,
+        label: "Analytics",
+        href: "/analytics"
     }
 ]
 

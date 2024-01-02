@@ -11,7 +11,7 @@ const inter = Inter({ subsets: ['latin'] })
 export const metadata: Metadata = {
   title: {
     default: 'Fuel Pulse',
-    template: '%s Fuel Pulse',
+    template: '%s - Fuel Pulse',
   },
   description: 'Effortlessly locate the most economical fuel prices near you. Streamlined. User-Friendly. Constantly Updated.',
   metadataBase: new URL('https://fuelpulse.troypoulter.com'),

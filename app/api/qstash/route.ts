@@ -20,8 +20,9 @@ async function handler(_req: NextRequest) {
     const oAuth = await fuelApiClient.getOAuth();
     console.log("OAuth tokens retrieved!");
 
-    console.log(_req.nextUrl.searchParams.entries())
-    const currentPrices = _req.nextUrl.searchParams.has('getAll', "true") ? await fuelApiClient.getAllCurrentPrices(oAuth.access_token) : await fuelApiClient.getNewPrices(oAuth.access_token);
+    // TODO: Investigate why when deployed, `searchParams` are undefined.
+    // const currentPrices = _req.nextUrl.searchParams.has('getAll', "true") ? await fuelApiClient.getAllCurrentPrices(oAuth.access_token) : await fuelApiClient.getNewPrices(oAuth.access_token);
+    const currentPrices = await fuelApiClient.getNewPrices(oAuth.access_token);
     console.log(`Retrieved current fuel price data for ${currentPrices.stations.length} stations with ${currentPrices.prices.length} total price data points`)
 
     const stationDbInsert = currentPrices.stations.map((station) => {

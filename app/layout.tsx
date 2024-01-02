@@ -3,6 +3,8 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import { Navbar } from './_components/navbar'
 import { Footer } from './_components/footer'
+import PlausibleProvider from 'next-plausible'
+import { env } from '@/lib/env.mjs'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -53,6 +55,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        {env.NODE_ENV === "production" && <PlausibleProvider domain="fuelpulse.troypoulter.com" trackOutboundLinks />}
+      </head>
       <body className={inter.className}>
         <div className='h-full relative flex flex-col min-h-screen bg-gradient-to-b from-white to-blue-100'>
           <div className="h-[64px] fixed inset-y-0 w-full z-[49]">

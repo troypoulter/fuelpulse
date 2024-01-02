@@ -31,6 +31,7 @@
     "drizzle-zod": "^0.5.1",
     "lucide-react": "^0.302.0",
     "next": "14.0.4",
+    "next-plausible": "^3.12.0",
     "react": "^18",
     "react-dom": "^18",
     "react-wrap-balancer": "^1.1.0",

@@ -2,9 +2,6 @@ import { db } from "@/lib/db";
 import { StationCard } from "./_components/station-card";
 import { haversineDistance } from "@/lib/utils";
 import Loading from "./loading";
-import { stat } from "fs/promises";
-
-export const revalidate = 3600 // revalidate the data at most every hour
 
 export default async function SearchPage({
     searchParams
@@ -45,8 +42,8 @@ export default async function SearchPage({
             if (parsedLat < -37.505 || parsedLat > -28.157 || parsedLong < 140.999 || parsedLong > 153.552) {
                 return (
                     <div className="flex flex-col items-center justify-center gap-y-4 h-full">
-                        <div className="flex flex-col gap-y-2">
-                            <h2 className="text-2xl font-bold text-center">No stations found</h2>
+                        <div className="flex flex-col gap-y-2 text-center">
+                            <h2 className="text-2xl font-bold">No fuel stations found</h2>
                             <p className="text-gray-500">You are likely outside of New South Wales, Australia, which is currently the only area supported unfortunately.</p>
                         </div>
                     </div>
@@ -57,7 +54,7 @@ export default async function SearchPage({
             return (
                 <div className="flex flex-col items-center justify-center gap-y-4 h-full">
                     <div className="flex flex-col gap-y-2 text-center">
-                        <h2 className="text-2xl font-bold">No stations found</h2>
+                        <h2 className="text-2xl font-bold">No fuel stations found</h2>
                         <p className="text-gray-500">Try increasing the search radius.</p>
                     </div>
                 </div>
@@ -80,7 +77,7 @@ export default async function SearchPage({
             return (
                 <div className="flex flex-col items-center justify-center gap-y-4 h-full">
                     <div className="flex flex-col gap-y-2 text-center">
-                        <h2 className="text-2xl font-bold">No stations found</h2>
+                        <h2 className="text-2xl font-bold">No fuel stations found</h2>
                         <p className="text-gray-500">Try increasing the search radius.</p>
                     </div>
                 </div>
@@ -119,7 +116,7 @@ export default async function SearchPage({
             return (
                 <div className="flex flex-col items-center justify-center gap-y-4 h-full">
                     <div className="flex flex-col gap-y-2 text-center">
-                        <h2 className="text-2xl font-bold">No stations found</h2>
+                        <h2 className="text-2xl font-bold">No fuel stations found</h2>
                         <p className="text-gray-500">Try increasing the search radius.</p>
                     </div>
                 </div>

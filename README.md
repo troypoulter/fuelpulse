@@ -2,8 +2,6 @@
 
 Effortlessly locate the most economical fuel prices near you. Streamlined. User-Friendly. Constantly Updated.
 
-Checkout https://fuelpulse.troypoulter.com/!
-
 ![hero_image](public/og.png)
 
 ## Features

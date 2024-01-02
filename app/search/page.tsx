@@ -1,7 +1,11 @@
 import { db } from "@/lib/db";
 import { StationCard } from "./_components/station-card";
-import { haversineDistance } from "@/lib/utils";
+import { cn, haversineDistance } from "@/lib/utils";
 import Loading from "./loading";
+import Link from "next/link";
+import { buttonVariants } from "@/components/ui/button";
+import { Navigation } from "lucide-react";
+import Balance from "react-wrap-balancer"
 
 export default async function SearchPage({
     searchParams
@@ -44,7 +48,10 @@ export default async function SearchPage({
                     <div className="flex flex-col items-center justify-center gap-y-4 h-full">
                         <div className="flex flex-col gap-y-2 text-center">
                             <h2 className="text-2xl font-bold">No fuel stations found</h2>
-                            <p className="text-gray-500">You are likely outside of New South Wales, Australia, which is currently the only area supported unfortunately.</p>
+                            <Balance className="text-gray-500 mx-auto flex max-w-[980px] flex-col items-center">You are likely outside of New South Wales, Australia, which is currently the only area supported. You can click the button below to check out fuel prices in Sydney to see what it looks like!</Balance>
+                            <Link href="/search?lat=-33.8930404&long=151.2765367" className={cn(buttonVariants())}>
+                                <Navigation className="mr-1 h-4 w-4" /> Check out fuel prices in Sydney
+                            </Link>
                         </div>
                     </div>
                 )
@@ -55,7 +62,10 @@ export default async function SearchPage({
                 <div className="flex flex-col items-center justify-center gap-y-4 h-full">
                     <div className="flex flex-col gap-y-2 text-center">
                         <h2 className="text-2xl font-bold">No fuel stations found</h2>
-                        <p className="text-gray-500">Try increasing the search radius.</p>
+                        <Balance className="text-gray-500 mx-auto flex max-w-[980px] flex-col items-center">Try increasing the search radius. You can click the button below to check out fuel prices in Sydney to see what it looks like!</Balance>
+                        <Link href="/search?lat=-33.8930404&long=151.2765367" className={cn(buttonVariants())}>
+                            <Navigation className="mr-1 h-4 w-4" /> Check out fuel prices in Sydney
+                        </Link>
                     </div>
                 </div>
             )
@@ -78,7 +88,10 @@ export default async function SearchPage({
                 <div className="flex flex-col items-center justify-center gap-y-4 h-full">
                     <div className="flex flex-col gap-y-2 text-center">
                         <h2 className="text-2xl font-bold">No fuel stations found</h2>
-                        <p className="text-gray-500">Try increasing the search radius.</p>
+                        <Balance className="text-gray-500 mx-auto flex max-w-[980px] flex-col items-center">Try increasing the search radius. You can click the button below to check out fuel prices in Sydney to see what it looks like!</Balance>
+                        <Link href="/search?lat=-33.8930404&long=151.2765367" className={cn(buttonVariants())}>
+                            <Navigation className="mr-1 h-4 w-4" /> Check out fuel prices in Sydney
+                        </Link>
                     </div>
                 </div>
             )
@@ -117,7 +130,10 @@ export default async function SearchPage({
                 <div className="flex flex-col items-center justify-center gap-y-4 h-full">
                     <div className="flex flex-col gap-y-2 text-center">
                         <h2 className="text-2xl font-bold">No fuel stations found</h2>
-                        <p className="text-gray-500">Try increasing the search radius.</p>
+                        <Balance className="text-gray-500 mx-auto flex max-w-[980px] flex-col items-center">Try increasing the search radius. You can click the button below to check out fuel prices in Sydney to see what it looks like!</Balance>
+                        <Link href="/search?lat=-33.8930404&long=151.2765367" className={cn(buttonVariants())}>
+                            <Navigation className="mr-1 h-4 w-4" /> Check out fuel prices in Sydney
+                        </Link>
                     </div>
                 </div>
             )

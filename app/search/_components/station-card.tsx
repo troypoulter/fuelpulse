@@ -19,10 +19,9 @@ import { Button } from '@/components/ui/button';
 import { MapPinned } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
-export const StationCard = ({ station, primaryFuelType, lowestPrice }: { station: StationWithPricesAndDistance, primaryFuelType: string, lowestPrice: number }) => {
-    const fuelTank = 30;
+export const StationCard = ({ station, primaryFuelType, lowestPrice, tankSize }: { station: StationWithPricesAndDistance, primaryFuelType: string, lowestPrice: number, tankSize: number }) => {
     const primaryFuel = station.prices.find(s => s.fuelType === primaryFuelType)!;
-    const priceDifferenceNumber = (((primaryFuel.price ?? 0) / 100 * fuelTank) - (lowestPrice !== Infinity ? lowestPrice / 100 * fuelTank : 0));
+    const priceDifferenceNumber = (((primaryFuel.price ?? 0) / 100 * tankSize) - (lowestPrice !== Infinity ? lowestPrice / 100 * tankSize : 0));
     const priceDifference = priceDifferenceNumber.toFixed(2);
 
     const priceDifferenceCents = (((primaryFuel.price ?? 0)) - (lowestPrice !== Infinity ? lowestPrice : 0)).toFixed(1);
@@ -51,12 +50,12 @@ export const StationCard = ({ station, primaryFuelType, lowestPrice }: { station
                 <Accordion type="single" collapsible className="w-full">
                     <AccordionItem value="item-1">
                         <AccordionTrigger>
-                            <div className="flex flex-col items-start">
+                            <div className="flex flex-col items-start gap-y-2">
                                 <div className={cn("inline-flex justify-start items-baseline rounded-lg bg-opacity-20 px-1.5 py-1 text-xs font-medium", getPriceDifferenceColour(primaryFuel.price))}>+${priceDifference} (+{priceDifferenceCents}c/L)</div>
                                 <div className="flex items-baseline gap-x-1">
-                                    <div className="text-xl font-bold"><span className="tracking-tight font-normal text-xs">{primaryFuelType}</span> {((primaryFuel.price ?? 0) / 100 * fuelTank).toLocaleString("en-AU", { style: "currency", currency: "AUD" })}</div>
+                                    <div className="text-xl font-bold"><span className="tracking-tight font-normal text-xs">{primaryFuelType}</span> {((primaryFuel.price ?? 0) / 100 * tankSize).toLocaleString("en-AU", { style: "currency", currency: "AUD" })}</div>
                                     <span className="text-xs text-muted-foreground">
-                                        (<span className="font-bold">{primaryFuel.price}</span>c/L for 30L)
+                                        (<span className="font-bold">{primaryFuel.price}</span>c/L for {tankSize}L)
                                     </span>
                                 </div>
                             </div>
@@ -82,7 +81,7 @@ export const StationCard = ({ station, primaryFuelType, lowestPrice }: { station
                                     {station.prices.map(price => (
                                         <TableRow key={price.fuelType}>
                                             <TableCell className="font-semibold">{price.fuelType}</TableCell>
-                                            <TableCell>{(price.price / 100 * fuelTank).toLocaleString("en-AU", { style: "currency", currency: "AUD" })}</TableCell>
+                                            <TableCell>{(price.price / 100 * tankSize).toLocaleString("en-AU", { style: "currency", currency: "AUD" })}</TableCell>
                                             <TableCell>{price.price}c/L</TableCell>
                                         </TableRow>
                                     ))}

@@ -9,11 +9,12 @@ export default async function SearchPage({
 }: {
     searchParams?: { [key: string]: string | string[] | undefined };
 }) {
-    const { lat, long, fuelType, radius } = searchParams as { [key: string]: string };
+    const { lat, long, fuelType, radius, tankSize } = searchParams as { [key: string]: string };
 
     let parsedLat: number | null = null;
     let parsedLong: number | null = null;
     const parsedRadius = parseFloat(radius ?? "0");
+    const parsedTankSize = parseFloat(tankSize ?? "0");
 
     // Try to parse latitude and longitude
     if (lat && long) {
@@ -84,7 +85,7 @@ export default async function SearchPage({
 
         return (
             <div className="grid gap-2 md:gap-4 grid-cols-1 md:grid-cols-3 lg:grid-cols-4">
-                {stationsWithDistance?.map(station => (<StationCard key={station.id} station={station} primaryFuelType={fuelType} lowestPrice={lowestPrice} />))}
+                {stationsWithDistance?.map(station => (<StationCard key={station.id} station={station} primaryFuelType={fuelType} lowestPrice={lowestPrice} tankSize={parsedTankSize} />))}
             </div>
         )
     }

@@ -14,7 +14,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
-import { Loader2, LocateFixed } from "lucide-react";
+import { Fuel, Loader2, LocateFixed, Radius } from "lucide-react";
 import { useState } from 'react';
 import { fuelTypes } from "@/lib/constants";
 
@@ -28,6 +28,7 @@ export const SearchInputs = () => {
     const [longitude, setLongitude] = useState<string | undefined>(undefined);
     const [fuelType, setFuelType] = useState("E10");
     const [radius, setRadius] = useState([10]);
+    const [tankSize, setTankSize] = useState([30]);
 
     const setGeolocationInURL = () => {
         setLoading(true);
@@ -68,11 +69,15 @@ export const SearchInputs = () => {
                 params.set('radius', (radius[0] ?? 10).toString());
             }
 
+            if (tankSize) {
+                params.set('tankSize', (tankSize[0] ?? 10).toString());
+            }
+
             router.push(`${pathname}?${params.toString()}`);
         }
 
         updateURLQueryParams();
-    }, [fuelType, radius, latitude, longitude, pathname, router, searchParams]);
+    }, [fuelType, radius, latitude, longitude, pathname, router, searchParams, tankSize]);
 
     useEffect(() => {
         if (!searchParams.has('lat') && !searchParams.has('long')) {
@@ -85,6 +90,10 @@ export const SearchInputs = () => {
 
         if (searchParams.has('radius')) {
             setRadius([Number(searchParams.get('radius')!)]);
+        }
+
+        if (searchParams.has('tankSize')) {
+            setTankSize([Number(searchParams.get('tankSize')!)]);
         }
     }, [searchParams]);
 
@@ -109,12 +118,27 @@ export const SearchInputs = () => {
             </Select>
             <div className="grid gap-2 w-[160px]">
                 <div className="flex items-center justify-between">
-                    <Label htmlFor="radius">Radius</Label>
+                    <div className="flex items-center space-x-2">
+                        <Radius className="mr-1 h-4 w-4" />
+                        <Label htmlFor="radius">Radius</Label>
+                    </div>
                     <span className="px-2 py-0.5 text-right text-sm text-muted-foreground">
                         {radius}km
                     </span>
                 </div>
                 <Slider defaultValue={radius} onValueChange={setRadius} max={50} min={2} step={2} aria-label="radius" />
+            </div>
+            <div className="grid gap-2 w-[160px]">
+                <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-2">
+                        <Fuel className="mr-1 h-4 w-4" />
+                        <Label htmlFor="radius">Tank Size</Label>
+                    </div>
+                    <span className="px-2 py-0.5 text-right text-sm text-muted-foreground">
+                        {tankSize}L
+                    </span>
+                </div>
+                <Slider defaultValue={tankSize} onValueChange={setTankSize} max={100} min={10} step={5} aria-label="tankSize" />
             </div>
         </div>
     )

@@ -22,10 +22,10 @@ export default async function Home() {
     return (
         <div>
             <PageHeader>
-                <Announcement />
+                {/* <Announcement /> */}
                 <PageHeaderHeading>Find the best fuel price across {totalStations[0]?.value.toLocaleString()} stations in Australia</PageHeaderHeading>
                 <PageHeaderDescription>
-                    Effortlessly locate the most economical fuel options near you.
+                    Effortlessly locate the most economical fuel prices near you.
                     Streamlined. User-Friendly. Constantly Updated.
                 </PageHeaderDescription>
                 <PageActions>

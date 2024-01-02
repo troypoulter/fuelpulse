@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     default: 'Fuel Pulse',
     template: '%s Fuel Pulse',
   },
-  description: 'Find the best fuel price in Australia',
+  description: 'Effortlessly locate the most economical fuel prices near you. Streamlined. User-Friendly. Constantly Updated.',
   metadataBase: new URL('https://fuelpulse.troypoulter.com'),
   keywords: ['fuel', 'petrol', 'gas', 'diesel', 'prices', 'australia', 'Next.js', 'React', 'Tailwind CSS', 'TypeScript', 'shadcn', 'Server Components', 'Radix UI'],
   authors: [
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     locale: 'en_AU',
     url: 'https://fuelpulse.troypoulter.com',
     title: 'Fuel Pulse',
-    description: 'Find the best fuel price in Australia',
+    description: 'Effortlessly locate the most economical fuel prices near you. Streamlined. User-Friendly. Constantly Updated.',
     siteName: 'Fuel Pulse',
     images: [
       {
@@ -40,7 +40,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Fuel Pulse',
-    description: 'Find the best fuel price in Australia',
+    description: 'Effortlessly locate the most economical fuel prices near you. Streamlined. User-Friendly. Constantly Updated.',
     images: ['https://fuelpulse.troypoulter.com/og.png'],
     creator: "@troypoulterr"
   }

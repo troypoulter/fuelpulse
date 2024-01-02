@@ -7,8 +7,43 @@ import { Footer } from './_components/footer'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Fuel Pulse',
+  title: {
+    default: 'Fuel Pulse',
+    template: '%s Fuel Pulse',
+  },
   description: 'Find the best fuel price in Australia',
+  metadataBase: new URL('https://fuelpulse.troypoulter.com'),
+  keywords: ['fuel', 'petrol', 'gas', 'diesel', 'prices', 'australia', 'Next.js', 'React', 'Tailwind CSS', 'TypeScript', 'shadcn', 'Server Components', 'Radix UI'],
+  authors: [
+    {
+      name: 'Troy Poulter',
+      url: 'https://troypoulter.com',
+    }
+  ],
+  creator: "Troy Poulter",
+  openGraph: {
+    type: 'website',
+    locale: 'en_AU',
+    url: 'https://fuelpulse.troypoulter.com',
+    title: 'Fuel Pulse',
+    description: 'Find the best fuel price in Australia',
+    siteName: 'Fuel Pulse',
+    images: [
+      {
+        url: 'https://fuelpulse.troypoulter.com/og.png',
+        width: 1200,
+        height: 630,
+        alt: 'Fuel Pulse',
+      }
+    ]
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Fuel Pulse',
+    description: 'Find the best fuel price in Australia',
+    images: ['https://fuelpulse.troypoulter.com/og.png'],
+    creator: "@troypoulterr"
+  }
 }
 
 export default function RootLayout({

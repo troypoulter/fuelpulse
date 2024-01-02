@@ -49,9 +49,9 @@ export default async function Home() {
                     priority
                 />
                 <div className="flex space-x-4">
-                    <div className="text-emerald-500 text-lg tracking-tight font-medium">Supported</div>
-                    <div className="text-orange-500 text-lg tracking-tight font-medium">Coming Soon</div>
-                    <div className="text-red-500 text-lg tracking-tight font-medium">Not Supported</div>
+                    <div className="text-emerald-500 text-lg tracking-tight font-bold">Supported</div>
+                    <div className="text-orange-500 text-lg tracking-tight font-bold">Coming Soon</div>
+                    <div className="text-red-500 text-lg tracking-tight font-bold">Not Supported</div>
                 </div>
                 <Alert className="max-w-lg">
                     <HelpCircle className="h-4 w-4" />

@@ -32,11 +32,13 @@ export const StationSchema = z.object({
     "name": z.string(),
     "address": z.string(),
     "location": LocationSchema,
+    "state": z.string()
 });
 export type Station = z.infer<typeof StationSchema>;
 
 export const PriceSchema = z.object({
-    "stationcode": z.string(),
+    "stationcode": z.number(),
+    "state": z.string(),
     "fueltype": z.string(),
     "price": z.number(),
     "lastupdated": z.string(),

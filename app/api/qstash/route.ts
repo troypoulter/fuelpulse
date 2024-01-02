@@ -20,14 +20,14 @@ async function handler(_req: NextRequest) {
     const oAuth = await fuelApiClient.getOAuth();
     console.log("OAuth tokens retrieved!");
 
-    console.log("Getting the current fuel prices in NSW");
-    const currentPrices = await fuelApiClient.getAllCurrentPrices(oAuth.access_token);
+    const currentPrices = _req.nextUrl.searchParams.has('getAll', "true") ? await fuelApiClient.getAllCurrentPrices(oAuth.access_token) : await fuelApiClient.getNewPrices(oAuth.access_token);
     console.log(`Retrieved current fuel price data for ${currentPrices.stations.length} stations with ${currentPrices.prices.length} total price data points`)
 
     const stationDbInsert = currentPrices.stations.map((station) => {
         return insertStationSchema.parse({
             name: station.name,
             address: station.address,
+            state: station.state,
             code: station.code,
             brand: station.brand,
             latitude: station.location.latitude,
@@ -46,9 +46,10 @@ async function handler(_req: NextRequest) {
 
     const pricesDbInsert = currentPrices.prices.map((price) => {
         return insertPriceSchema.parse({
-            stationCode: price.stationcode,
+            stationCode: price.stationcode.toString(),
             fuelType: price.fueltype,
             price: price.price,
+            state: price.state,
             lastUpdatedRaw: price.lastupdated,
             lastUpdatedUTC: convertToISO8601(price.lastupdated, 'Australia/Sydney')
         })

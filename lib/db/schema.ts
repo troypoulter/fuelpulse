@@ -6,6 +6,7 @@ import { z } from "zod";
 export const stations = sqliteTable('stations', {
     id: integer('id').primaryKey(),
     name: text('name').notNull(),
+    state: text('state'),
     address: text('address').notNull(),
     code: text('code').notNull().unique(),
     brand: text('brand').notNull(),
@@ -28,6 +29,7 @@ export const prices = sqliteTable('prices', {
     stationCode: text('stationCode').notNull().references(() => stations.code),
     fuelType: text('fuelType').notNull(),
     price: real('price').notNull(),
+    state: text('state'),
     lastUpdatedRaw: text('lastUpdatedRaw').notNull(),
     lastUpdatedUTC: text('lastUpdatedUTC').notNull(),
     createdAt: text("createdAt").default(sql`CURRENT_TIMESTAMP`)

@@ -32,7 +32,7 @@ export const SearchInputs = () => {
     const [longitude, setLongitude] = useState<string | undefined>("151.2765367");
     const [fuelType, setFuelType] = useState("E10");
     const [sortBy, setSortBy] = useState("price");
-    const [radius, setRadius] = useState([10]);
+    const [radius, setRadius] = useState([5]);
     const [tankSize, setTankSize] = useState([30]);
 
     const setGeolocationInURL = () => {

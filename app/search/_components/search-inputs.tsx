@@ -4,6 +4,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider"
+import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import {
@@ -77,11 +78,11 @@ export const SearchInputs = () => {
             }
 
             if (radius && radius.length > 0) {
-                params.set('radius', (radius[0] ?? 10).toString());
+                params.set('radius', (radius[0] ?? 5).toString());
             }
 
             if (tankSize) {
-                params.set('tankSize', (tankSize[0] ?? 10).toString());
+                params.set('tankSize', (tankSize[0] ?? 30).toString());
             }
 
             router.push(`${pathname}?${params.toString()}`);
@@ -151,25 +152,21 @@ export const SearchInputs = () => {
                 <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-2">
                         <Radius className="h-4 w-4" />
-                        <Label htmlFor="radius">Radius</Label>
+                        <Label htmlFor="radius">Radius (km)</Label>
                     </div>
-                    <span className="px-2 py-0.5 text-right text-sm text-muted-foreground">
-                        {radius}km
-                    </span>
+                    <Input type="number" className="text-right tex-sm text-muted-foreground w-16 h-6" value={radius[0]} onChange={(e) => setRadius([Number(e.target.value)])} />
                 </div>
-                <Slider defaultValue={radius} onValueChange={setRadius} max={50} min={2} step={2} aria-label="radius" />
+                <Slider value={radius} onValueChange={setRadius} max={50} min={2} step={2} aria-label="radius" />
             </div>
             <div className="grid gap-2 w-[160px]">
                 <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-2">
                         <Fuel className="h-4 w-4" />
-                        <Label htmlFor="tankSize">Tank Size</Label>
+                        <Label htmlFor="tankSize">Tank Size (L)</Label>
                     </div>
-                    <span className="px-2 py-0.5 text-right text-sm text-muted-foreground">
-                        {tankSize}L
-                    </span>
+                    <Input type="number" className="text-right tex-sm text-muted-foreground w-20 h-6" value={tankSize[0]} onChange={(e) => setTankSize([Number(e.target.value)])} />
                 </div>
-                <Slider defaultValue={tankSize} onValueChange={setTankSize} max={200} min={10} step={5} aria-label="tankSize" />
+                <Slider value={tankSize} onValueChange={setTankSize} max={200} min={10} step={5} aria-label="tankSize" />
             </div>
         </div>
     )

@@ -169,7 +169,7 @@ export const SearchInputs = () => {
                         {tankSize}L
                     </span>
                 </div>
-                <Slider defaultValue={tankSize} onValueChange={setTankSize} max={100} min={10} step={5} aria-label="tankSize" />
+                <Slider defaultValue={tankSize} onValueChange={setTankSize} max={200} min={10} step={5} aria-label="tankSize" />
             </div>
         </div>
     )

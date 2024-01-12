@@ -3,9 +3,8 @@ import { twMerge } from "tailwind-merge"
 import { format, zonedTimeToUtc } from 'date-fns-tz';
 import { parse } from 'date-fns';
 import { ZodError, ZodSchema } from "zod";
-import { CurrentPrices, Station } from "./fuelApi/schemas";
-import { cache } from "react";
-import { db } from "./db";
+import { SQLiteRelationalQuery } from "drizzle-orm/sqlite-core/query-builders/query";
+import * as Sentry from "@sentry/nextjs";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -67,4 +66,16 @@ export function convertToISO8601(dateString: string, timezone: string): string {
 
   // Format the UTC date in ISO 8601 format
   return format(dateInUTC, "yyyy-MM-dd'T'HH:mm:ss'Z'");
+}
+
+// Inspired from https://github.com/getsentry/sentry-javascript/discussions/8117#discussioncomment-7623605
+export async function executeQueryWithSentry<T>(query: SQLiteRelationalQuery<"async", T>, op = "db.query") {
+  return await Sentry.startSpan(
+    {
+      op: op,
+      name: query.toSQL().sql,
+      data: { "db.system": "sqlite" },
+    },
+    async () => await query.execute()
+  );
 }

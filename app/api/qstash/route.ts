@@ -6,6 +6,7 @@ import { fuelApiClient } from "@/lib/fuelApi/fuelApiClient";
 import { insertPriceSchema, insertStationSchema, prices, stations } from "@/lib/db/schema";
 import { db } from "@/lib/db";
 import { convertToISO8601 } from "@/lib/utils";
+import * as Sentry from "@sentry/nextjs";
 
 // As we can deal with a large amount of data, breaking it down
 // into small batches ensures we don't performance hit the API
@@ -38,7 +39,17 @@ async function handler(_req: NextRequest) {
     console.log('Inserting new stations into the DB...')
     for (let i = 0; i < stationDbInsert.length; i += BATCH_SIZE) {
         const batch = stationDbInsert.slice(i, i + BATCH_SIZE);
-        const result = await db.insert(stations).values(batch).onConflictDoNothing();
+        const insertStationQuery = db.insert(stations).values(batch).onConflictDoNothing();
+
+        const result = await Sentry.startSpan(
+            {
+                op: "db.query",
+                name: insertStationQuery.toSQL().sql,
+                data: { "db.system": "sqlite" },
+            },
+            async () => await insertStationQuery.execute(),
+        );
+
         newStationsInserted += result.rowsAffected;
     }
     console.log(`Finished inserting ${newStationsInserted} new stations into the DB!`)
@@ -58,7 +69,16 @@ async function handler(_req: NextRequest) {
     console.log('Inserting new prices into the DB...');
     for (let i = 0; i < pricesDbInsert.length; i += BATCH_SIZE) {
         const batch = pricesDbInsert.slice(i, i + BATCH_SIZE);
-        const result = await db.insert(prices).values(batch).onConflictDoNothing();
+        const insertPricingQuery = db.insert(prices).values(batch).onConflictDoNothing();
+        const result = await Sentry.startSpan(
+            {
+                op: "db.query",
+                name: insertPricingQuery.toSQL().sql,
+                data: { "db.system": "sqlite" },
+            },
+            async () => await insertPricingQuery.execute(),
+        );
+
         newPricesInserted += result.rowsAffected;
     }
     console.log(`Finished inserting ${newPricesInserted} new prices into the DB!`)

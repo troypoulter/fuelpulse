@@ -1,6 +1,6 @@
 import { db } from "@/lib/db";
 import { StationCard } from "./_components/station-card";
-import { cn, haversineDistance } from "@/lib/utils";
+import { cn, haversineDistance, executeQueryWithSentry } from "@/lib/utils";
 import Loading from "./loading";
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
@@ -32,7 +32,8 @@ export default async function SearchPage({
     }
 
     if (parsedLat !== null && parsedLong !== null && fuelType && parsedRadius && parsedTankSize && sortBy) {
-        const stations = await db.query.stations.findMany();
+        const findStationsQuery = db.query.stations.findMany();
+        const stations = await executeQueryWithSentry(findStationsQuery);
 
         const stationsWithDistanceMiddle = stations.map(station => ({
             ...station,
@@ -71,7 +72,7 @@ export default async function SearchPage({
             )
         }
 
-        const stationsWithDistanceAgain = await db.query.stations.findMany({
+        const stationsWithDistanceAgainQuery = db.query.stations.findMany({
             with: {
                 prices: {
                     // Trying to reduce the size returned as more prices are retrieved by ordering
@@ -82,6 +83,8 @@ export default async function SearchPage({
             },
             where: (station, { inArray }) => inArray(station.id, stationsWithDistanceMiddle.map(station => station.id))
         });
+
+        const stationsWithDistanceAgain = await executeQueryWithSentry(stationsWithDistanceAgainQuery)
 
         if (stationsWithDistanceAgain.length === 0) {
             return (

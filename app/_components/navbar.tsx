@@ -4,7 +4,7 @@ import { SidebarRoutes } from './sidebar-routes';
 
 export const Navbar = () => {
     return (
-        <div className="h-full flex bg-white border-b shadow-sm">
+        <div className="h-full flex border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 shadow-sm">
             <div className="container relative flex p-4 gap-x-4 h-full items-center">
                 <MobileSidebar />
                 <div className="absolute left-1/2 transform -translate-x-1/2 md:static md:transform-none">

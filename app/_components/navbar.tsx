@@ -4,6 +4,8 @@ import { SidebarRoutes } from './sidebar-routes';
 
 export const Navbar = () => {
     return (
+        // Blurred background inspired from
+        // https://github.com/shadcn-ui/ui/blob/8f3b28f50fb17f8af652ef514a1648307d05e7a9/apps/www/components/site-header.tsx#L14
         <div className="h-full flex border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 shadow-sm">
             <div className="container relative flex p-4 gap-x-4 h-full items-center">
                 <MobileSidebar />

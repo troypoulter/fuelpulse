@@ -1,3 +1,4 @@
+import { env } from "@/lib/env.mjs";
 
 export function Footer() {
     return (
@@ -23,7 +24,14 @@ export function Footer() {
                         >
                             GitHub
                         </a>
-                        .
+                        . Version: <a
+                            href={`https://github.com/troypoulter/fuelpulse/commit/${env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA}`}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="font-medium underline underline-offset-4"
+                        >
+                            {env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA.substring(0, 7)}
+                        </a>.
                     </p>
                 </div>
             </div>

@@ -32,7 +32,7 @@ export const metadata: Metadata = {
     siteName: 'Fuel Pulse',
     images: [
       {
-        url: 'https://fuelpulse.troypoulter.com/og.png',
+        url: '/api/og',
         width: 1200,
         height: 630,
         alt: 'Fuel Pulse',
@@ -43,7 +43,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Fuel Pulse',
     description: 'Effortlessly locate the most economical fuel prices near you. Streamlined. User-Friendly. Constantly Updated.',
-    images: ['https://fuelpulse.troypoulter.com/og.png'],
+    images: ['/api/og'],
     creator: "@troypoulterr"
   }
 }

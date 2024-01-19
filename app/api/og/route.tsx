@@ -13,6 +13,9 @@ import { promises } from 'fs';
 // Likewise, we can't use fetch in nodejs runtime, so need to use fs.
 export const runtime = env.NODE_ENV === 'development' ? 'nodejs' : 'edge';
 
+const fontDataURL = env.NODE_ENV === 'development' ? '../../../assets/InterTight-Bold.ttf' : './assets/InterTight-Bold.ttf';
+const backgroundDataURL = env.NODE_ENV === 'development' ? '../../../assets/fuel_pulse_og_background.png' : './assets/fuel_pulse_og_background.png';
+
 export async function GET() {
     let fontData: ArrayBuffer;
     let backgroundData: ArrayBuffer;
@@ -21,8 +24,8 @@ export async function GET() {
         fontData = await promises.readFile('./assets/InterTight-Bold.ttf');
         backgroundData = await promises.readFile('./assets/fuel_pulse_og_background.png');
     } else {
-        fontData = await fetch(new URL('../../../assets/InterTight-Bold.ttf', import.meta.url)).then((res) => res.arrayBuffer());
-        backgroundData = await fetch(new URL('../../../assets/fuel_pulse_og_background.png', import.meta.url)).then((res) => res.arrayBuffer());
+        fontData = await fetch(new URL(fontDataURL, import.meta.url)).then((res) => res.arrayBuffer());
+        backgroundData = await fetch(new URL(backgroundDataURL, import.meta.url)).then((res) => res.arrayBuffer());
     }
 
     const totalStations = await db.select({ value: count() }).from(stations);

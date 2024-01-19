@@ -18,15 +18,15 @@ export const runtime = 'edge';
 // const backgroundDataURL = env.NODE_ENV === 'development' ? '../../../assets/fuel_pulse_og_background.png' : './assets/fuel_pulse_og_background.png';
 
 export async function GET() {
-    let fontData: ArrayBuffer;
-    let backgroundData: ArrayBuffer;
+    // let fontData: ArrayBuffer;
+    // let backgroundData: ArrayBuffer;
 
     // if (env.NODE_ENV === 'development') {
     //     fontData = await promises.readFile('./assets/InterTight-Bold.ttf');
     //     backgroundData = await promises.readFile('./assets/fuel_pulse_og_background.png');
     // } else {
-    fontData = await fetch(new URL('@/assets/InterTight-Bold.ttf', import.meta.url)).then((res) => res.arrayBuffer());
-    backgroundData = await fetch(new URL('@/assets/fuel_pulse_og_background.png', import.meta.url)).then((res) => res.arrayBuffer());
+    const fontData = await fetch(new URL('@/assets/InterTight-Bold.ttf', import.meta.url)).then((res) => res.arrayBuffer());
+    const backgroundData = await fetch(new URL('@/assets/fuel_pulse_og_background.png', import.meta.url)).then((res) => res.arrayBuffer());
     // }
 
     const totalStations = await db.select({ value: count() }).from(stations);

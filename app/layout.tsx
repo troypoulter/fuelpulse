@@ -5,46 +5,53 @@ import { Navbar } from './_components/navbar'
 import { Footer } from './_components/footer'
 import PlausibleProvider from 'next-plausible'
 import { env } from '@/lib/env.mjs'
+import { db } from '@/lib/db'
+import { stations } from '@/lib/db/schema'
+import { count } from 'drizzle-orm'
 
 const inter = Inter({ subsets: ['latin'] })
 
-export const metadata: Metadata = {
-  title: {
-    default: 'Fuel Pulse',
-    template: '%s - Fuel Pulse',
-  },
-  description: 'Effortlessly locate the most economical fuel prices near you. Streamlined. User-Friendly. Constantly Updated.',
-  metadataBase: new URL('https://fuelpulse.troypoulter.com'),
-  keywords: ['fuel', 'petrol', 'gas', 'diesel', 'prices', 'australia', 'Next.js', 'React', 'Tailwind CSS', 'TypeScript', 'shadcn', 'Server Components', 'Radix UI'],
-  authors: [
-    {
-      name: 'Troy Poulter',
-      url: 'https://troypoulter.com',
-    }
-  ],
-  creator: "Troy Poulter",
-  openGraph: {
-    type: 'website',
-    locale: 'en_AU',
-    url: 'https://fuelpulse.troypoulter.com',
-    title: 'Fuel Pulse',
+export async function generateMetadata(): Promise<Metadata> {
+  const totalStations = await db.select({ value: count() }).from(stations);
+
+  return {
+    title: {
+      default: 'Fuel Pulse',
+      template: '%s - Fuel Pulse',
+    },
     description: 'Effortlessly locate the most economical fuel prices near you. Streamlined. User-Friendly. Constantly Updated.',
-    siteName: 'Fuel Pulse',
-    images: [
+    metadataBase: new URL('https://fuelpulse.troypoulter.com'),
+    keywords: ['fuel', 'petrol', 'gas', 'diesel', 'prices', 'australia', 'Next.js', 'React', 'Tailwind CSS', 'TypeScript', 'shadcn', 'Server Components', 'Radix UI'],
+    authors: [
       {
-        url: '/api/og',
-        width: 1200,
-        height: 630,
-        alt: 'Fuel Pulse',
+        name: 'Troy Poulter',
+        url: 'https://troypoulter.com',
       }
-    ]
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Fuel Pulse',
-    description: 'Effortlessly locate the most economical fuel prices near you. Streamlined. User-Friendly. Constantly Updated.',
-    images: ['/api/og'],
-    creator: "@troypoulterr"
+    ],
+    creator: "Troy Poulter",
+    openGraph: {
+      type: 'website',
+      locale: 'en_AU',
+      url: 'https://fuelpulse.troypoulter.com',
+      title: 'Fuel Pulse',
+      description: 'Effortlessly locate the most economical fuel prices near you. Streamlined. User-Friendly. Constantly Updated.',
+      siteName: 'Fuel Pulse',
+      images: [
+        {
+          url: `/api/og?stationsCount=${totalStations[0]?.value}`,
+          width: 1200,
+          height: 630,
+          alt: 'Fuel Pulse',
+        }
+      ]
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: 'Fuel Pulse',
+      description: 'Effortlessly locate the most economical fuel prices near you. Streamlined. User-Friendly. Constantly Updated.',
+      images: [`/api/og?stationsCount=${totalStations[0]?.value}`],
+      creator: "@troypoulterr"
+    }
   }
 }
 

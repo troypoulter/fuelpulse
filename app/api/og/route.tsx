@@ -29,7 +29,7 @@ export async function GET() {
     // const backgroundData = await fetch(new URL('../../../assets/fuel_pulse_og_background.png', import.meta.url)).then((res) => res.arrayBuffer());
     // }
 
-    const totalStations = await db.select({ value: count() }).from(stations);
+    // const totalStations = await db.select({ value: count() }).from(stations);
 
     return new ImageResponse(
         (
@@ -40,7 +40,7 @@ export async function GET() {
                     src={`data:image/png;base64,${Buffer.from(backgroundData).toString('base64')}`}
                 /> */}
                 <svg xmlns="http://www.w3.org/2000/svg" width="168" height="168" viewBox="0 0 168 168" fill="none" stroke="#007DFC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M 5 3 L 19 3 C 20.104353 3 21 3.895647 21 5 L 21 19 C 21 20.104353 20.104353 21 19 21 L 5 21 C 3.895647 21 3 20.104353 3 19 L 3 5 C 3 3.895647 3.895647 3 5 3 Z M 5 3 " transform="matrix(7,0,0,7,0,0)" /><path d="M 17 12 L 15 12 L 13 17 L 11 7 L 9 12 L 7 12 " transform="matrix(7,0,0,7,0,0)" /></svg>
-                <h1 tw="text-7xl font-bold text-center text-slate-900 mt-2">Find the best fuel price across {totalStations[0]?.value.toLocaleString()} stations in Australia</h1>
+                <h1 tw="text-7xl font-bold text-center text-slate-900 mt-2">Find the best fuel price across 3,874 stations in Australia</h1>
             </div>
         ),
         {

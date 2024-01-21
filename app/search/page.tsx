@@ -6,6 +6,9 @@ import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
 import { Navigation } from "lucide-react";
 import Balance from "react-wrap-balancer"
+import { getStations } from "@/lib/stations";
+
+export const revalidate = 3600 // revalidate the data at most every hour
 
 export default async function SearchPage({
     searchParams
@@ -32,8 +35,7 @@ export default async function SearchPage({
     }
 
     if (parsedLat !== null && parsedLong !== null && fuelType && parsedRadius && parsedTankSize && sortBy) {
-        const findStationsQuery = db.query.stations.findMany();
-        const stations = await executeQueryWithSentry(findStationsQuery);
+        const stations = await getStations();
 
         const stationsWithDistanceMiddle = stations.map(station => ({
             ...station,

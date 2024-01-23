@@ -6,9 +6,8 @@ import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
 import { Navigation } from "lucide-react";
 import Balance from "react-wrap-balancer"
-import { getStations } from "@/lib/stations";
-
-export const revalidate = 43200 // revalidate the data at most every 12 hours
+import { stations as stationsSchema } from "@/lib/db/schema";
+import { sql, lte } from 'drizzle-orm'
 
 export default async function SearchPage({
     searchParams
@@ -35,15 +34,31 @@ export default async function SearchPage({
     }
 
     if (parsedLat !== null && parsedLong !== null && fuelType && parsedRadius && parsedTankSize && sortBy) {
-        const stations = await getStations();
+        const findStationsQuery = db.query.stations.findMany({
+            extras: {
+                distance: sql<number>`
+                6371 * acos(
+                    cos(radians(${parsedLat}))
+                    * cos(radians(${stationsSchema.latitude}))
+                    * cos(radians(${stationsSchema.longitude}) - radians(${parsedLong}))
+                    + sin(radians(${parsedLat}))
+                    * sin(radians(${stationsSchema.latitude}))
+                  )
+                `.as('distance')
+            },
+            where: (lte(sql`distance`, parsedRadius)),
+            with: {
+                prices: {
+                    // Trying to reduce the size returned as more prices are retrieved by ordering
+                    // by ID assuming the later prices are more recent and then limiting to 15.
+                    orderBy: (prices, { desc }) => [desc(prices.id)],
+                    limit: 10
+                }
+            },
+        });
+        const stations = await executeQueryWithSentry(findStationsQuery);
 
-        const stationsWithDistanceMiddle = stations.map(station => ({
-            ...station,
-            distance: parseFloat(haversineDistance(parsedLat!, parsedLong!, station.latitude, station.longitude).toFixed(1))
-        }))
-            .filter(station => station.distance <= parsedRadius);
-
-        if (stationsWithDistanceMiddle.length === 0) {
+        if (stations.length === 0) {
             // TODO: Update to use something like https://github.com/rapideditor/country-coder when supporting more states.
             // Rough bounds for NSW.
             if (parsedLat < -37.505 || parsedLat > -28.157 || parsedLong < 140.999 || parsedLong > 153.552) {
@@ -74,35 +89,7 @@ export default async function SearchPage({
             )
         }
 
-        const stationsWithDistanceAgainQuery = db.query.stations.findMany({
-            with: {
-                prices: {
-                    // Trying to reduce the size returned as more prices are retrieved by ordering
-                    // by ID assuming the later prices are more recent and then limiting to 15.
-                    orderBy: (prices, { desc }) => [desc(prices.id)],
-                    limit: 10
-                }
-            },
-            where: (station, { inArray }) => inArray(station.id, stationsWithDistanceMiddle.map(station => station.id))
-        });
-
-        const stationsWithDistanceAgain = await executeQueryWithSentry(stationsWithDistanceAgainQuery)
-
-        if (stationsWithDistanceAgain.length === 0) {
-            return (
-                <div className="flex flex-col items-center justify-center gap-y-4 h-full">
-                    <div className="flex flex-col gap-y-2 text-center">
-                        <h2 className="text-2xl font-bold">No fuel stations found</h2>
-                        <Balance className="text-gray-500 mx-auto flex max-w-[980px] flex-col items-center">Try increasing the search radius. You can click the button below to check out fuel prices in Sydney to see what it looks like!</Balance>
-                        <Link href="/search?lat=-33.8930404&long=151.2765367" className={cn(buttonVariants())}>
-                            <Navigation className="mr-1 h-4 w-4" /> Check out fuel prices in Sydney
-                        </Link>
-                    </div>
-                </div>
-            )
-        }
-
-        const stationsWithDistance = stationsWithDistanceAgain.map(station => {
+        const stationsWithDistance = stations.map(station => {
             const uniquePrices = station.prices.reduce((acc: { [key: string]: any }, price) => {
                 if (!acc[price.fuelType] || new Date(price.lastUpdatedUTC) > new Date(acc[price.fuelType].lastUpdatedUTC)) {
                     acc[price.fuelType] = price;
@@ -112,7 +99,7 @@ export default async function SearchPage({
 
             return {
                 ...station,
-                distance: stationsWithDistanceMiddle.find(s => s.id === station.id)?.distance ?? 0,
+                distance: stations.find(s => s.id === station.id)?.distance ?? 0,
                 prices: Object.values(uniquePrices)
             };
         })

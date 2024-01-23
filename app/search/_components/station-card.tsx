@@ -42,7 +42,7 @@ export const StationCard = ({ station, primaryFuelType, lowestPrice, tankSize }:
                 </div>
                 <Button variant="outline" className="ml-auto self-start" size="sm" asChild>
                     <a href={`https://maps.google.com/?saddr=Current+Location&daddr=${encodeURIComponent(station.address)}`} target="_blank" rel="noopener noreferrer">
-                        <MapPinned className="mr-1 h-4 w-4" />{station.distance}km
+                        <MapPinned className="mr-1 h-4 w-4" />{station.distance.toFixed(1)}km
                     </a>
                 </Button>
             </CardHeader>

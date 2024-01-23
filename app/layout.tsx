@@ -5,14 +5,14 @@ import { Navbar } from './_components/navbar'
 import { Footer } from './_components/footer'
 import PlausibleProvider from 'next-plausible'
 import { env } from '@/lib/env.mjs'
-import { db } from '@/lib/db'
-import { stations } from '@/lib/db/schema'
-import { count } from 'drizzle-orm'
+import { getStations } from '@/lib/stations'
 
 const inter = Inter({ subsets: ['latin'] })
 
+export const revalidate = 43200 // revalidate the data at most every 12 hours
+
 export async function generateMetadata(): Promise<Metadata> {
-  const totalStations = await db.select({ value: count() }).from(stations);
+  const totalStations = (await getStations()).length;
 
   return {
     title: {
@@ -38,7 +38,7 @@ export async function generateMetadata(): Promise<Metadata> {
       siteName: 'Fuel Pulse',
       images: [
         {
-          url: `/api/og?stationsCount=${totalStations[0]?.value}`,
+          url: `/api/og?stationsCount=${totalStations}`,
           width: 1200,
           height: 630,
           alt: 'Fuel Pulse',
@@ -49,7 +49,7 @@ export async function generateMetadata(): Promise<Metadata> {
       card: 'summary_large_image',
       title: 'Fuel Pulse',
       description: 'Effortlessly locate the most economical fuel prices near you. Streamlined. User-Friendly. Constantly Updated.',
-      images: [`/api/og?stationsCount=${totalStations[0]?.value}`],
+      images: [`/api/og?stationsCount=${totalStations}`],
       creator: "@troypoulterr"
     }
   }

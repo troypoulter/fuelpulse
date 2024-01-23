@@ -4,25 +4,24 @@ import {
     PageHeaderDescription,
     PageHeaderHeading,
 } from "@/components/page-header"
-import { Announcement } from "@/components/announcement"
 import { buttonVariants } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { Fuel, HelpCircle } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
-import { db } from "@/lib/db"
-import { count } from "drizzle-orm"
-import { stations } from "@/lib/db/schema"
+import { getStations } from "@/lib/stations"
+
+export const revalidate = 43200 // revalidate the data at most every 12 hours
 
 export default async function Home() {
-    const totalStations = await db.select({ value: count() }).from(stations);
+    const totalStations = (await getStations()).length;
 
     return (
         <div>
             <PageHeader>
                 {/* <Announcement /> */}
-                <PageHeaderHeading>Find the best fuel price across {totalStations[0]?.value.toLocaleString()} stations in Australia</PageHeaderHeading>
+                <PageHeaderHeading>Find the best fuel price across {totalStations.toLocaleString()} stations in Australia</PageHeaderHeading>
                 <PageHeaderDescription>
                     Effortlessly locate the most economical fuel prices near you.
                     Streamlined. User-Friendly. Constantly Updated.

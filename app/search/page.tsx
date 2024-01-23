@@ -8,7 +8,7 @@ import { Navigation } from "lucide-react";
 import Balance from "react-wrap-balancer"
 import { getStations } from "@/lib/stations";
 
-export const revalidate = 3600 // revalidate the data at most every hour
+export const revalidate = 43200 // revalidate the data at most every 12 hours
 
 export default async function SearchPage({
     searchParams

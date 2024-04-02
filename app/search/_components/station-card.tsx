@@ -16,8 +16,9 @@ import {
 import { formatDistanceToNow } from 'date-fns';
 import { StationWithPricesAndDistance } from "@/lib/db/schema";
 import { Button } from '@/components/ui/button';
-import { MapPinned } from 'lucide-react';
+import { MapPinned, Info } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import Link from "next/link"
 
 export const StationCard = ({ station, primaryFuelType, lowestPrice, tankSize }: { station: StationWithPricesAndDistance, primaryFuelType: string, lowestPrice: number, tankSize: number }) => {
     const primaryFuel = station.prices.find(s => s.fuelType === primaryFuelType)!;
@@ -40,11 +41,18 @@ export const StationCard = ({ station, primaryFuelType, lowestPrice, tankSize }:
                     <CardTitle className="flex flex-row font-medium lg:h-9 lg:overflow-auto">{station.name}</CardTitle>
                     <CardDescription className="lg:h-10 lg:overflow-auto">{station.address}</CardDescription>
                 </div>
-                <Button variant="outline" className="ml-auto self-start" size="sm" asChild>
+                <div className="flex flex-col gap-y-2">
+                <Button variant="outline" size="sm" asChild>
                     <a href={`https://maps.google.com/?saddr=Current+Location&daddr=${encodeURIComponent(station.address)}`} target="_blank" rel="noopener noreferrer">
                         <MapPinned className="mr-1 h-4 w-4" />{station.distance.toFixed(1)}km
                     </a>
                 </Button>
+                <Button variant="outline" size="sm" asChild>
+                    <Link href={`/stations/${station.id}`}>
+                        <Info className="mr-1 h-4 w-4" /> Details
+                    </Link>
+                </Button>
+                </div>
             </CardHeader>
             <CardContent>
                 <Accordion type="single" collapsible className="w-full">

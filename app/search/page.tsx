@@ -35,7 +35,7 @@ export default async function SearchPage({
 
     if (parsedLat !== null && parsedLong !== null && fuelType && parsedRadius && parsedTankSize && sortBy) {
         const findStationsQuery = db.query.stations.findMany({
-            extras: {
+                extras: {
                 distance: sql<number>`
                 6371 * acos(
                     cos(radians(${parsedLat}))
